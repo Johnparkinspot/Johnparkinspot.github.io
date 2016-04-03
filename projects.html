@@ -76,6 +76,7 @@ function dectobin()
 		return; 
 	}
 	
+	
 	while (true)
 	{
 			if(dec == 1)
@@ -97,7 +98,7 @@ function dectobin()
 			if(remainderfinal[t] == 1)
 				break;
 				
-			if(!remainderfinal[t]) // checks if NULL or 0 it is, go to next index, and keep going until hitting a 1
+			if(!remainderfinal[t]) // checks if NULL or 0
 			{
 				++t;
 			}
@@ -119,6 +120,128 @@ function dectobin()
 
 //end binary to decimal calculator
 
+</script> 
+
+<script> // Monalphabetic Cipher Solver 
+
+var bool1,bool2,bool3,bool4,bool5,bool6, bool7,bool8,bool9,bool10;
+
+bool1 = bool2 = bool3=bool4=bool5=bool6=bool7=bool8=bool9=bool10=0;
+
+function boldletter(input, word) 
+{
+	return input.replace(new RegExp('(^|\\s)(' + word + ')(\\s|$)','ig'), '$1<b>$2</b>$3');
+}
+
+function replace()
+{
+		var cipher = document.getElementById("cipher").textContent;
+		var i;
+		var updatedcipher = document.getElementById("solution").textContent;
+		
+		if(bool10 == 1)
+		{
+			updatedcipher = updatedcipher.replace(/L/g,'b');// iaushbdiouhbakjshbdkjhabdsfkjhasbdfkjhab
+			updatedcipher = updatedcipher.replace(/M/g,'q');
+		}
+		
+		if(bool9 == 1)
+		{
+		    bool10= 1;
+			updatedcipher = updatedcipher.replace(/Y/g,'v');// iuahbskujdbakjhsbdjhkkabsd
+			updatedcipher = updatedcipher.replace(/G/g,'u'); 
+			updatedcipher = updatedcipher.replace(/N/g,'l');
+		}
+		
+		if(bool8 == 1)
+		{
+			bool9 = 1;
+			updatedcipher = updatedcipher.replace(/Q/g,'f'); // aliushbdljhabsd;ksjdnglkjsfejk
+			updatedcipher = updatedcipher.replace(/K/g,'r');
+			updatedcipher = updatedcipher.replace(/P/g,'m');
+			updatedcipher = updatedcipher.replace(/J/g,'g');  
+		}
+		if(bool7 ==1)
+		{
+			bool8=1;
+			updatedcipher = updatedcipher.replace(/A/g,'d'); //aailusjhdalj
+			updatedcipher = updatedcipher.replace(/X/g,'p');
+			updatedcipher = updatedcipher.replace(/U/g,'c');
+			updatedcipher = updatedcipher.replace(/Z/g,'k');
+		}
+		if(bool6 == 1)
+		{	//alert('6th part of the button');
+		    bool7 = 1;
+			updatedcipher = updatedcipher.replace(/T/g,'i');
+			updatedcipher = updatedcipher.replace(/D/g,'s');
+		}
+		
+		if(bool5 == 1)
+		{ //alert('6th part of the button');
+			bool6 = 1;
+			updatedcipher = updatedcipher.replace(/W/g,'y');
+		}
+		
+		if(bool4 ==1)
+		{ //alert('5th part of the button');
+			bool5 = 1;
+			updatedcipher = updatedcipher.replace(/C/g,'n');
+		}
+		
+		if(bool3 == 1) // REPLACE DCRL with FROM D~f C~ r
+		{// alert('4th part of the button');
+			bool4 = 1;
+			updatedcipher = updatedcipher.replace(/R/g,'o');
+			//document.getElementById("solution").innerHTML = updatedcipher;
+		}
+		
+		if(bool2 == 1) // REPLACE BR with in  R ~ o
+		{  // alert('third part of button');
+		    bool3 = 1;
+			updatedcipher = updatedcipher.replace(/H/g,'w');
+			document.getElementById("solution").innerHTML = updatedcipher;
+		}
+		
+		if(bool1 == 1)   // replace 'LF' with me
+		{
+		//alert('second part of the button' ); 
+		bool2 = 1;
+		updatedcipher = updatedcipher.replace(/E/g,'a');
+		
+		document.getElementById("solution").innerHTML = updatedcipher;
+		}
+		
+		
+		if(bool1 ==0)
+		{
+		//alert('first part of button changing "BSF" to "and" ');
+		bool1= 1;                      // ../g    flag replaces every instance of the word ( global) 
+		//cipher=cipher.replace(/BSF/g,'one');
+		cipher=cipher.replace(/B/g,'t');
+		cipher=cipher.replace(/S/g,'h');
+		cipher=cipher.replace(/F/g,'e');
+		
+		//cipher = cipher.replace(/(^|\s)(ONE)(\s|$)/ig, '$1<b>$2</b>$3');
+		//cipher = boldletter(cipher,"O");
+
+		document.getElementById("solution").innerHTML = cipher;
+		}
+		
+		//cipher = cipher.replace(/\s/g,'');  gets rid of whitespace 
+		//alert(cipher);
+		//alert(cipher[0]);
+		
+                                                    // (define regular expression, ' what you're replacing with')
+ //	cipher =  cipher.replace(/BKGF/i,'THATS');  // string immutable (not changing) so have to reassign value
+
+}
+
+function reset_cipher()
+{
+ bool1 = bool2 = bool3 = bool4 = bool5 = bool6 = bool7 = bool8 = bool9 = bool10 = 0;
+ document.getElementById("solution").innerHTML = " ";
+}
+// ***** END MONALPHABETIC CIPHER 
 </script> 
 
 
@@ -177,9 +300,35 @@ function dectobin()
 	
 	</div>
 	<!-- End Binary to Decimal --> 	
+	<br>
 	
 	
+	<!-- Monalphabetic Cipher Solver Example -->
+	<div class= "container" style="border: thin solid black">
+	<h2> Example of a Monalphabetic Cipher </h2> 
+	<p>Monalphabetic Ciphers  encode each unique Plaintext to a unique cipher text. No two 
+             different letters get encoded to a single letter. Given this cipher, the best way to go about solving
+			it is first by using frequency analysis. Since E is statistically the most common plaintext, we can try to find
+			the most frequently occuring ciphertext replace it with E. We can also replace 3 letter words with common 
+			trigraphs to further help us decode the cipher.</p>
+	<br>
+	<p id="cipher">BKGF TCATYTAGENTDBD BFCA BR LF MGTBF GCRLDFKYECB TB TD BSF DCRL BSF HRGNA LF
+DRXSTDBTUEBF BSF QKTJSBFCFA URCQRKPTDB HSR ZFFXD E QEDUTCEBFA RK HRKKTFA FWF
+RC HSEB TD TC BSF HTCA</p>
 
+	<br>
+	
+	<p id="solution" >   </p> 
+   <button type="button" class="btn btn-default" onclick="replace()"> Click a Lot </button>
+   <button type="button" class="btn btn-default" onclick="reset_cipher()"> Reset </button>
+	
+	<br>
+	<br>
+	</div>
+	
+<!-- End Monalphabetic Cipher Solver Example -->
+
+<br>
 
 </body>
 
