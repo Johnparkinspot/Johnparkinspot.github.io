@@ -1,0 +1,161 @@
+<DOCTYPE !html>
+<html lang="en">
+<head>
+	<title> Projects</title>
+
+	<!-- add Bootstrap content delivery network (CDN) -->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<!-- Link JQuery from Google CDN -->
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"> </script>
+
+	
+</head>
+
+<script>
+
+// Binary to Decimal Calculator works
+function bintodec()
+{
+			var bin_str= document.getElementById("binary").value;
+			var bin_num = new Array();
+			var i;
+			var j;
+			var k;
+			var dec; 
+			var temp;
+			var length; 
+			k = 0;
+			dec = 0;
+			// make sure all 1's and 0's not working atm 
+			/*
+			for(i = 0; i < bin_str.length;++i)
+			{
+					temp =  Number(bin_str[i]);
+					if((temp != 0) || (temp != 1))
+					{
+						alert("please enter only 1's and 0's");
+						break;
+					}
+			} 
+		  */
+		  
+		  // first reverse string
+			for(j=bin_str.length-1; j >= 0; --j)
+			{
+			bin_num[k] = bin_str[j];
+			k=k+1;
+			}
+				
+			
+			for(i = 0; i < bin_num.length; ++i)
+			{
+				if(Number(bin_num[i]) == 1)
+				{
+					dec = dec + Math.pow(2,i);
+				}
+			}
+			
+					
+			document.getElementById("output").innerHTML = dec;
+}
+
+function dectobin()
+{
+	var dec = Number(document.getElementById("decimal").value);
+	var remainder = new Array();
+	var i, k;
+	var remainderfinal = new Array();
+	i = 1;
+	k = 0;
+	remainder[0] = dec % 2;
+	
+	while (true)
+	{
+			if(dec == 1)
+				break;
+			dec = Math.floor(dec/2);
+			remainder[i] = dec % 2;
+			++i;
+	}
+	// reverse the bin string to get correct orientation ( least to greatest - left to right)
+	for(i; i >= 0; --i)
+	{
+		remainderfinal[k] = remainder[i];
+		++k;
+	}
+	
+	
+	
+	document.getElementById("output").innerHTML = remainderfinal;
+}
+
+
+//end binary to decimal calculator
+
+</script> 
+
+
+
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">John Park</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li ><a href="index.html">Home</a></li>
+      <li><a href="resume.html">Resume</a></li>
+      <li class="active"><a href="#">Projects</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </div>
+</nav>
+<!-- End Navigation -->
+	
+	
+    <!-- Page Content -->
+    <div class="container" style="padding: 50px" >
+		<div class = "row" >
+		
+			<div class = "col-lg-8">
+				<H1>Here are some things I have been working on: </h1> 
+			</div>
+		</div> 
+	</div> 
+	
+	
+	
+	<!-- Binary to Decimal and vice versa calculator --> 
+	<div class="container" style="border: thin solid black">
+		<h2> Binary To Decimal 
+		<form role="form">
+			<div class="form-group">
+				<label for="Binary"> Binary: </label>
+				<input type="text" class="form-control" id="binary" placeholder="Enter Binary Number">
+			</div>
+			<div class="form-group">
+				<label for="decimal">Decimal:</label>
+				<input type="number" class="form-control" id="decimal" placeholder="Enter Decimal Number">
+			</div>
+
+
+				<p  id="output">  Output </p> 
+
+
+			<button type="button" class="btn btn-default" onclick="bintodec()"> Bin to Dec</button>
+			<button type="button" class="btn btn-default"  onclick="dectobin()"> Dec to Bin </button>
+		</form>
+	
+	</div>
+	<!-- End Binary to Decimal --> 	
+	
+	
+
+
+</body>
+
+
+
+</html>
