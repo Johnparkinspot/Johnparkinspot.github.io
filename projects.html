@@ -70,6 +70,12 @@ function dectobin()
 	t = 0; 
 	remainder[0] = dec % 2;
 	
+	if(dec <= 0)
+	{
+		alert("Please input a number greater than 0.");
+		return; 
+	}
+	
 	while (true)
 	{
 			if(dec == 1)
