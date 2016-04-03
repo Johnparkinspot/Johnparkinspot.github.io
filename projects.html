@@ -63,10 +63,11 @@ function dectobin()
 {
 	var dec = Number(document.getElementById("decimal").value);
 	var remainder = new Array();
-	var i, k;
+	var i, k,t;
 	var remainderfinal = new Array();
 	i = 1;
 	k = 0;
+	t = 0; 
 	remainder[0] = dec % 2;
 	
 	while (true)
@@ -84,10 +85,30 @@ function dectobin()
 		++k;
 	}
 	
+	// trying to remove the commas by concatinating the the elements of the array 
+	while(true)
+	{		// to skip over the NULL parts of the array  so that for '32' doesnt show = undef undef 1 0 0 0 0 0 0 ... 
+			if(remainderfinal[t] == 1)
+				break;
+				
+			if(!remainderfinal[t]) // checks if NULL or 0 it is, go to next index, and keep going until hitting a 1
+			{
+				++t;
+			}
+	}
 	
+	var concatinatedstring = String(remainderfinal[t]);
+	++t;
+	if(remainderfinal.length > 1)
+	{
+	for(t; t < remainderfinal.length; ++t)
+	{
+			concatinatedstring = concatinatedstring + String(remainderfinal[t]);
+	}
+	}
 	
-	document.getElementById("output").innerHTML = remainderfinal;
-}
+	document.getElementById("output").innerHTML = concatinatedstring;  // successfully does not show undefined parts (idk why that happens)
+}  
 
 
 //end binary to decimal calculator
