@@ -500,6 +500,7 @@ function solve_vigenere()
 			key_iterator = mod(key_iterator + 1, 5); 
 		 }
 		document.getElementById("solvevig").innerHTML = solve; 
+		document.getElementById("aftervig").innerHTML = "So it does give sensible plaintext. 'Banchoff discovered his first geometry .. ' Having Trouble with Javascript iterating through character array and replacing each with vigenere key. So i just pushed it all onto an array and it looks notgood. "
 }
 
 //*** END Vigenere Cipher Example  ||||||||||||||||||||||||||||||||||||||||||||||
@@ -823,6 +824,8 @@ We will try to decrypt this Vigen&eacute;re Cipher: </p>
 	  <p id ="solvevig"> </p>
 		</div> 
 	  <button type="button" class="btn btn-default" onclick="solve_vigenere()"> Solve </button>
+	  <br><br>
+	 <p id="aftervig">  </p> 
 	  
 	  <br> <br> 
 </div>
