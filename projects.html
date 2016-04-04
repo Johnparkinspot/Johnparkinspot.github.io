@@ -474,6 +474,337 @@ function chisquared() // for key length 5 the string lengths are 97 flat **
 	document.getElementById("step3").innerHTML = sigma; 
 
 }
+var key1;
+key1 = 0; 
+// fill in the table 
+function fill_seq1() // fill column sequence 1
+{
+	var vig_ciph = document.getElementById("vigenere").textContent;
+	 vig_ciph = vig_ciph.split(' ').join('');  // removes whitespace 
+	 var keylength,j,i;
+	 var expectedvalue;
+	 var char_count; 
+	 char_count = 0; 
+	 keylength = 5;
+	 var split1 = new Array();
+	for(j = 0; j < vig_ciph.length; j += keylength)
+	{  
+	       split1.push(vig_ciph[j]); 
+	}
+
+	var C = new Array();
+	var E = new Array(); 
+	var chisquared = new Array(); 
+
+	for(i = 0; i < 97; ++i)
+	{
+		for(j = 0; j < 26; ++j)
+		{
+				if(split1[i] == alphabet[j]) 
+				{
+					split1[i] = alphabet[mod(j-key1,26)];
+					break; // EXTREMELY IMPORTANT BREAK TO PREVENT BUGS WHEN WRAP AROUNDING
+				}
+		}
+	}  
+	// counting characters where formula happens, lazy so have to manually change the sequence from split1 -> split2 - split3 split4 split5
+	for(i = 0; i < 26; ++i)
+	{
+		for(j = 0; j < 97;++j)
+		{
+			if(split1[j] == alphabet[i])
+			{
+				++char_count;
+			}
+		}
+		C.push(char_count); 
+		E.push(letter_freq[i] * 97);
+		chisquared.push(Math.pow(C[i]-E[i],2)/E[i]);
+		char_count = 0; // reset char count once reaching end of 1st for  lop. 
+	}
+	var sigma;
+	sigma = 0; 
+	for(i = 0; i < 26; ++i)	// where we do the sigma part of the formula
+	{
+		sigma = sigma + chisquared[i];
+	}
+
+	if(key1 != 14)
+	{
+			document.getElementById("seq1_"+key1).innerHTML = sigma; 
+	}
+	
+	if(key1 < 25)
+	{
+	++key1;
+	} 
+
+}
+
+var key2;
+key2 = 0; 
+// fill in the table 
+function fill_seq2() // fill column sequence 2
+{
+	var vig_ciph = document.getElementById("vigenere").textContent;
+	 vig_ciph = vig_ciph.split(' ').join('');  // removes whitespace 
+	 var keylength,j,i;
+	 var expectedvalue;
+	 var char_count; 
+	 char_count = 0; 
+	 keylength = 5;
+	 var split2 = new Array();
+	for(j = 1; j < vig_ciph.length; j += keylength)
+	{  
+	       split2.push(vig_ciph[j]); 
+	}
+
+	var C = new Array();
+	var E = new Array(); 
+	var chisquared = new Array(); 
+
+	for(i = 0; i < 97; ++i)
+	{
+		for(j = 0; j < 26; ++j)
+		{
+				if(split2[i] == alphabet[j]) 
+				{
+					split2[i] = alphabet[mod(j-key2,26)];
+					break; // EXTREMELY IMPORTANT BREAK TO PREVENT BUGS WHEN WRAP AROUNDING
+				}
+		}
+	}  
+	// counting characters where formula happens, lazy so have to manually change the sequence from split1 -> split2 - split3 split4 split5
+	for(i = 0; i < 26; ++i)
+	{
+		for(j = 0; j < 97;++j)
+		{
+			if(split2[j] == alphabet[i])
+			{
+				++char_count;
+			}
+		}
+		C.push(char_count); 
+		E.push(letter_freq[i] * 97);
+		chisquared.push(Math.pow(C[i]-E[i],2)/E[i]);
+		char_count = 0; // reset char count once reaching end of 1st for  lop. 
+	}
+	var sigma;
+	sigma = 0; 
+	for(i = 0; i < 26; ++i)	// where we do the sigma part of the formula
+	{
+		sigma = sigma + chisquared[i];
+	}
+
+	if(key2 != 19)
+	{
+			document.getElementById("seq2_"+key2).innerHTML = sigma; 
+	}
+	
+	if(key2 < 25)
+	{
+	++key2;
+	} 
+}
+
+var key3;
+key3 = 0; 
+// fill in the table 
+function fill_seq3() // fill column sequence3
+{
+	var vig_ciph = document.getElementById("vigenere").textContent;
+	 vig_ciph = vig_ciph.split(' ').join('');  // removes whitespace 
+	 var keylength,j,i;
+	 var expectedvalue;
+	 var char_count; 
+	 char_count = 0; 
+	 keylength = 5;
+	 var split3 = new Array();
+    for(j = 2; j < vig_ciph.length; j += keylength)
+	{  
+	       split3.push(vig_ciph[j]); 
+	}
+
+	var C = new Array();
+	var E = new Array(); 
+	var chisquared = new Array(); 
+
+	for(i = 0; i < 97; ++i)
+	{
+		for(j = 0; j < 26; ++j)
+		{
+				if(split3[i] == alphabet[j]) 
+				{
+					split3[i] = alphabet[mod(j-key3,26)];
+					break; // EXTREMELY IMPORTANT BREAK TO PREVENT BUGS WHEN WRAP AROUNDING
+				}
+		}
+	}  
+	// counting characters where formula happens, lazy so have to manually change the sequence from split1 -> split2 - split3 split4 split5
+	for(i = 0; i < 26; ++i)
+	{
+		for(j = 0; j < 97;++j)
+		{
+			if(split3[j] == alphabet[i])
+			{
+				++char_count;
+			}
+		}
+		C.push(char_count); 
+		E.push(letter_freq[i] * 97);
+		chisquared.push(Math.pow(C[i]-E[i],2)/E[i]);
+		char_count = 0; // reset char count once reaching end of 1st for  lop. 
+	}
+	var sigma;
+	sigma = 0; 
+	for(i = 0; i < 26; ++i)	// where we do the sigma part of the formula
+	{
+		sigma = sigma + chisquared[i];
+	}
+
+	if(key3 != 7)
+	{
+			document.getElementById("seq3_"+key3).innerHTML = sigma; 
+	}
+	
+	if(key3 < 25)
+	{
+	++key3;
+	} 
+}
+
+var key4;
+key4 = 0; 
+// fill in the table 
+function fill_seq4() // fill column sequence4
+{
+	var vig_ciph = document.getElementById("vigenere").textContent;
+	 vig_ciph = vig_ciph.split(' ').join('');  // removes whitespace 
+	 var keylength,j,i;
+	 var expectedvalue;
+	 var char_count; 
+	 char_count = 0; 
+	 keylength = 5;
+	 var split4 = new Array();
+    for(j = 3; j < vig_ciph.length; j += keylength)
+	{  
+	       split4.push(vig_ciph[j]); 
+	}
+
+	var C = new Array();
+	var E = new Array(); 
+	var chisquared = new Array(); 
+
+	for(i = 0; i < 97; ++i)
+	{
+		for(j = 0; j < 26; ++j)
+		{
+				if(split4[i] == alphabet[j]) 
+				{
+					split4[i] = alphabet[mod(j-key4,26)];
+					break; // EXTREMELY IMPORTANT BREAK TO PREVENT BUGS WHEN WRAP AROUNDING
+				}
+		}
+	}  
+	// counting characters where formula happens, lazy so have to manually change the sequence from split1 -> split2 - split3 split4 split5
+	for(i = 0; i < 26; ++i)
+	{
+		for(j = 0; j < 97;++j)
+		{
+			if(split4[j] == alphabet[i])
+			{
+				++char_count;
+			}
+		}
+		C.push(char_count); 
+		E.push(letter_freq[i] * 97);
+		chisquared.push(Math.pow(C[i]-E[i],2)/E[i]);
+		char_count = 0; // reset char count once reaching end of 1st for  lop. 
+	}
+	var sigma;
+	sigma = 0; 
+	for(i = 0; i < 26; ++i)	// where we do the sigma part of the formula
+	{
+		sigma = sigma + chisquared[i];
+	}
+
+	if(key4 != 4)
+	{
+			document.getElementById("seq4_"+key4).innerHTML = sigma; 
+	}
+	
+	if(key4 < 25)
+	{
+	++key4;
+	} 
+}
+
+var key5;
+key5 = 0; 
+// fill in the table 
+function fill_seq5() // fill column sequence5
+{
+	var vig_ciph = document.getElementById("vigenere").textContent;
+	 vig_ciph = vig_ciph.split(' ').join('');  // removes whitespace 
+	 var keylength,j,i;
+	 var expectedvalue;
+	 var char_count; 
+	 char_count = 0; 
+	 keylength = 5;
+	 var split5 = new Array();
+    for(j = 4; j < vig_ciph.length; j += keylength)
+	{  
+	       split5.push(vig_ciph[j]); 
+	}
+
+	var C = new Array();
+	var E = new Array(); 
+	var chisquared = new Array(); 
+
+	for(i = 0; i < 97; ++i)
+	{
+		for(j = 0; j < 26; ++j)
+		{
+				if(split5[i] == alphabet[j]) 
+				{
+					split5[i] = alphabet[mod(j-key5,26)];
+					break; // EXTREMELY IMPORTANT BREAK TO PREVENT BUGS WHEN WRAP AROUNDING
+				}
+		}
+	}  
+	// counting characters where formula happens, lazy so have to manually change the sequence from split1 -> split2 - split3 split4 split5
+	for(i = 0; i < 26; ++i)
+	{
+		for(j = 0; j < 97;++j)
+		{
+			if(split5[j] == alphabet[i])
+			{
+				++char_count;
+			}
+		}
+		C.push(char_count); 
+		E.push(letter_freq[i] * 97);
+		chisquared.push(Math.pow(C[i]-E[i],2)/E[i]);
+		char_count = 0; // reset char count once reaching end of 1st for  lop. 
+	}
+	var sigma;
+	sigma = 0; 
+	for(i = 0; i < 26; ++i)	// where we do the sigma part of the formula
+	{
+		sigma = sigma + chisquared[i];
+	}
+
+	if(key5 != 17)
+	{
+			document.getElementById("seq5_"+key5).innerHTML = sigma; 
+	}
+	
+	if(key5 < 25)
+	{
+	++key5;
+	} 
+}
+
 
 function solve_vigenere()
 {
@@ -499,9 +830,9 @@ function solve_vigenere()
 			solve.push(alphabet[mod(get_char-key[key_iterator],26)])
 			key_iterator = mod(key_iterator + 1, 5); 
 		 }
-		 solve = solve.join(""); 
+		 solve = solve.join('');
 		document.getElementById("solvevig").innerHTML = solve; 
-		document.getElementById("aftervig").innerHTML = "So it does give sensible plaintext. 'Banchoff discovered his first geometry .. ' "
+		document.getElementById("aftervig").innerHTML = "So it does give sensible plaintext. 'Banchoff discovered his first geometry .. '  "
 }
 
 //*** END Vigenere Cipher Example  ||||||||||||||||||||||||||||||||||||||||||||||
@@ -710,105 +1041,107 @@ We will try to decrypt this Vigen&eacute;re Cipher: </p>
 	   the letter frequency of each letter via wikpedia. (<a href = "https://en.wikipedia.org/wiki/Letter_frequency">https://en.wikipedia.org/wiki/Letter_frequency</a>) 
 	    As an example, a's letter frequency is 8.167%, it appears approximately 8.167 times for every 100 letters. We will multiply that with the 
 		number of characters in our ciphertext to get the expected value of a. 
-	   </p>
 	  <br> <br>
+	   </p>
 	  <p id="step3" > </p> 
-	  <button type="button" class="btn btn-default" onclick="chisquared()"> Step 3 Testing </button>
+	  
+	  <div class="sub" style = "text-align: center;">
+	  <button type="button" class="btn btn-default" onclick="fill_seq1(); fill_seq2(); fill_seq3();fill_seq4();fill_seq5();" align = "middle">Fill Columns </button>
+	  </div>
 	  <br> <br> 
 	  
 	  <!-- Table of Chi sq --> 
 	  <div class= "sub"> 
-	<p> This is painful because for each index we have to shift the letter i times backwards so if
-	        i = 1, and then the ct 'z' goes to y. </p> 
-		<table class = "table table-bordered"> 
+	<p> So on Key 0, if our string is ABC, then on Key 1 the string is shifted by -1 so it is ZAB, then YZA in key 2. </p> 
+		<table class = "table table-bordered" style = "table-layout:fixed; "> 
 			<thead>
 				<tr>
 					<th> Key </th>
-					<th>Seq 1</th>
+					<th >Seq 1</th>
 					<th>Seq 2</th>
 					<th>Seq 3</th>
 					<th>Seq 4</th>
 					<th>Seq 5</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody >
 				<tr>
-					<th> 0 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 0 </th> <th id = "seq1_0"  style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_0"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_0"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_0"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_0"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 1 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 1 </th> <th id = "seq1_1"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_1"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_1"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_1"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_1"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 2 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 2 </th> <th id = "seq1_2"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_2"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_2"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_2"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_2"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 3 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 3 </th> <th id = "seq1_3"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_3"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_3"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_3"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_3"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 4 </th> <th> </th> <th></th>  <th> </th>  <th><mark>26</mark></th>  <th>  </th> 
+					<th> 4 </th> <th id = "seq1_4"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_4"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_4"style="overflow:hidden; white-space:nowrap;"> </th>  <th><mark>26</mark></th>  <th id = "seq5_4"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 5 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 5 </th> <th id = "seq1_5"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_5"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_5"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_5"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_5"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 6 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 6 </th> <th id = "seq1_6"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_6"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_6"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_6"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_6"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 7 </th> <th> </th> <th></th>  <th><mark>34</mark> </th>  <th>  </th>  <th>  </th> 
+					<th> 7 </th> <th id = "seq1_7"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_7"style="overflow:hidden; white-space:nowrap;"></th>  <th><mark>34</mark> </th>  <th id = "seq4_7"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_7"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 8 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 8 </th> <th id = "seq1_8"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_8"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_8"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_8"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_8"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 9 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 9 </th> <th id = "seq1_9"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_9"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_9"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_9"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_9"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 10 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 10 </th> <th id = "seq1_10"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_10"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_10"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_10"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_10"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 11</th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 11</th> <th id = "seq1_11"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_11"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_11"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_11"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_11"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 12 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 12 </th> <th id = "seq1_12"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_12"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_12"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_12"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_12"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 13 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 13 </th> <th id = "seq1_13"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_13"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_13"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_13"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_13"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 14</th> <th><mark>20</mark> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 14</th> <th id = "seq1_14"style="overflow:hidden; white-space:nowrap;"><mark>20</mark> </th> <th id = "seq2_14"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_14"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_14"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_14"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 15 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 15 </th> <th id = "seq1_15"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_15"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_15"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_15"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_15"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 16 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 16 </th> <th id = "seq1_16"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_16"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_16"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_16"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_16"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 17 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th><mark>29</mark>  </th> 
+					<th> 17 </th> <th id = "seq1_17"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_17"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_17"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_17"style="overflow:hidden; white-space:nowrap;">  </th>  <th><mark>29</mark>  </th> 
 				</tr>
 				<tr>
-					<th> 18 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 18 </th> <th id ="seq1_18"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_18"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_18"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_18"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_18"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 19 </th> <th> </th> <th><mark>18</mark></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 19 </th> <th id ="seq1_19"style="overflow:hidden; white-space:nowrap;"> </th> <th><mark>18</mark></th>  <th id = "seq3_19"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_19"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_19"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 20 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 20 </th> <th id = "seq1_20"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_20"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_20"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_20"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_20"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 21 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 21 </th> <th id = "seq1_21"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_21"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_21"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_21"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_21"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 22 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 22 </th> <th id = "seq1_22"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_22"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_22"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_22"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_22"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 23</th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 23</th> <th id = "seq1_23"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_23"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_23"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_23"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_23"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 24 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 24 </th> <th id = "seq1_24"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_24"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_24"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_24"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_24"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 				<tr>
-					<th> 25 </th> <th> </th> <th></th>  <th> </th>  <th>  </th>  <th>  </th> 
+					<th> 25 </th> <th id = "seq1_25"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_25"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_25"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_25"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_25"style="overflow:hidden; white-space:nowrap;">  </th> 
 				</tr>
 			</tbody>
 		</table>
