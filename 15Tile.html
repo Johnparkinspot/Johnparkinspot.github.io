@@ -1,0 +1,359 @@
+<!doctype html> <!-- Notice this code works but may take a little bit to load
+                  because the images are loaded from the internet --> 
+
+<html>
+
+<body>
+
+<canvas id = "canvas" height = "400" width = "400" style = "border:1px solid #d3d3d3;"> </canvas>
+
+<p id = "input"> </p>
+<script>
+// to get square postion number
+// tile 13 / 4 = 3 (row number)
+// tile 13 % 4 = 1 (column number)
+
+var canvas = document.getElementById("canvas");
+var context = canvas.getContext("2d");
+
+// whenever user clicks on mouse, function will be executed
+canvas.addEventListener("mousedown", handleMouseDown);
+
+// load the pics
+var n = 4;
+var size = Math.floor(canvas.height / n);
+var img = [];
+var empty ; // initialized to slot 15 b4 randomization process
+var selected;
+var board = [];
+
+loadImages();
+setupBoard();
+drawBoard();
+
+
+
+function setupBoard()
+{
+	// randomize board
+	for(var i = 0 ; i < n * n; ++i)
+	{
+		board[i] = i;
+	}
+
+	// shuffling process 
+	for(var size = n*n-1; size > 1;--size)
+	{   // math.random gives random from 0 to 1 scale by size
+		var r = Math.floor(Math.random()*(size+1));
+		var t = board[size];
+		board[size] = board[r];
+		board[r] = t;
+	}
+	
+    // gets the empty slot
+	for(var k = 0; k < n*n; ++k)
+	{
+		if(board[k] == 15) 
+		{      
+		//alert("empty is: " + k);
+		empty = k;}
+	} 
+
+	while(checkSolvability() != 1) // if solvable doesnt return 1, keep shuffling board
+	{ //  it is important to do this loop after setting empty in above for loop
+		//alert (" we need to randomize because current isn't solvable");
+		shuffleboard();
+	}
+	
+	var s = "";
+	for(var i = 0; i < 16; ++i)
+		s = s + ", " + board[i];
+	//alert(s);
+}
+
+function shuffleboard()
+{
+	for(var size = n*n-1; size > 1;--size)
+	{   // math.random gives random from 0 to 1 scale by size
+		var r = Math.floor(Math.random()*(size+1));
+		var t = board[size];
+		board[size] = board[r];
+		board[r] = t;
+	}
+	
+	// reset empty slot
+	for(var k = 0; k < n*n; ++k)
+	{
+		if(board[k] == 15) 
+		{      
+		//alert("empty is: " + k);
+		empty = k;}
+	} 
+}
+
+// we are determing solvability by following the formula from
+// this website: https://www.cs.bham.ac.uk/~mdr/teaching/modules04/java2/TilesSolvability.html
+function checkSolvability()
+{
+	var temp = [];
+	var inversions = 0;
+	var test = 0;
+	for(var i = 0; i < 16; ++i)
+	{
+		test = board[i];
+		temp.push(board[i]);
+		if(test != 1)
+			{inversions = inversions + (test - 1);}
+		var arraylength = temp.length;
+		for(var j = 0; j < arraylength; ++j)
+		{
+			if(temp[j] < test)
+			{ inversions = inversions - 1;}
+		}
+	}
+	
+	var checkeven = 0;
+	checkeven = inversions % 2;
+	// if inversions is even, and blank is on row 1 or 3 is solvable
+	if(checkeven == 0)
+	{
+		if(((empty > 3) && (empty < 8)) || ((empty > 11) && (empty < 16)))
+		{   //alert("is solvable according to the link i guarantee it");
+			return 1;}
+		else
+			return 0;
+	}
+	else // if inversions is odd. and blank is on row 0 or 2 is solvable
+	{
+		if((empty < 4) || ((empty > 7) && (empty < 12)))
+		{  // alert("is solvable according to the link i gaurantee it");
+			return 1;}
+		else
+			return 0;
+	}
+	
+	
+}
+
+
+function isNeighbor(selected, empty)
+{   
+	//lazy method
+	//alert("neighbor: " + selected + ", " + empty);
+	if(selected == 0)
+	{
+		if(empty == 1 || empty == 4)
+			return 1;
+		else return 0;
+	}
+	if(selected == 1)
+	{
+		if(empty == 0 || empty == 2 || empty == 5)
+			return 1;
+		else return 0;
+	}
+	if(selected == 2)
+	{
+		if(empty == 6 || empty == 3 || empty == 1)
+			return 1;
+		else return 0;
+	}
+	if(selected == 3)
+	{
+		if(empty == 2 || empty == 7)
+			return 1;
+		else return 0;
+	}
+	if(selected == 4)
+	{
+		if(empty == 0 || empty == 5 || empty == 8)
+			return 1;
+		else return 0;
+	}
+	if(selected == 5)
+	{
+		if(empty == 1 || empty == 4 || empty == 6 || empty == 9)
+			return 1;
+		else return 0;
+	}
+	if(selected == 6)
+	{
+		if(empty == 2 || empty == 5 || empty == 7 || empty == 10)
+			return 1;
+		else return 0;
+	}
+	if(selected == 7)
+	{
+		if(empty == 3 || empty == 6 || empty == 11)
+			return 1;
+		else return 0;
+	}
+	if(selected == 8)
+	{
+		if(empty == 4 || empty == 9 || empty == 12)
+			return 1;
+		else return 0;
+	}
+	if(selected == 9)
+	{
+		if(empty == 5 || empty == 8 || empty == 10 || empty == 13)
+			return 1;
+		else return 0;
+	}
+	if(selected == 10)
+	{		
+		if(empty == 6 || empty == 9 || empty == 14 || empty == 11)
+			return 1;
+		else return 0;
+	}
+	if(selected == 11)
+	{
+		if(empty == 7 || empty == 10 || empty == 15)
+			return 1;
+		else return 0;
+	}
+	if(selected == 12)
+	{
+		if(empty == 8 || empty == 13)
+			return 1;
+		else return 0;
+	}
+	if(selected == 13)
+	{
+		if(empty == 12 || empty == 9 || empty == 14)
+			return 1;
+		else return 0;
+	}
+	if(selected == 14)
+	{
+		if(empty == 13 || empty == 10 || empty == 15)
+			return 1;
+		else return 0;
+	}
+	if(selected == 15)
+	{
+		if(empty == 14 || empty == 11)
+			return 1;
+		else return 0;
+	}
+}
+
+function loadImages()
+{
+
+	img[0] = document.createElement("IMG");
+	img[0].setAttribute("src","http://i.imgur.com/dWIYm2f.jpg");
+
+	img[1] = document.createElement("IMG");
+	img[1].setAttribute("src","http://i.imgur.com/VGtGXZB.jpg");
+
+	img[2] = document.createElement("IMG");
+	img[2].setAttribute("src","http://i.imgur.com/rx6LmmO.jpg");
+
+	img[3] = document.createElement("IMG");
+	img[3].setAttribute("src","http://i.imgur.com/ZmSrOlm.jpg");
+
+	img[4] = document.createElement("IMG");
+	img[4].setAttribute("src","http://i.imgur.com/VsKnlrd.jpg");
+	
+	img[5] = document.createElement("IMG");
+	img[5].setAttribute("src","http://i.imgur.com/LswjYA0.jpg");
+	
+	img[6] = document.createElement("IMG");
+	img[6].setAttribute("src","http://i.imgur.com/1Zrj0yY.jpg");
+	
+	img[7] = document.createElement("IMG");
+	img[7].setAttribute("src","http://i.imgur.com/LZ4oLd8.jpg");
+	
+	img[8] = document.createElement("IMG");
+	img[8].setAttribute("src","http://i.imgur.com/LkxOHuY.jpg");
+	
+	img[9] = document.createElement("IMG");
+	img[9].setAttribute("src","http://i.imgur.com/5ALlQmv.jpg");
+	
+	img[10] = document.createElement("IMG");
+	img[10].setAttribute("src","http://i.imgur.com/z9kQy0F.jpg");
+	
+	img[11] = document.createElement("IMG");
+	img[11].setAttribute("src","http://i.imgur.com/jtGw616.jpg");
+
+	img[12] = document.createElement("IMG");
+	img[12].setAttribute("src","http://i.imgur.com/nxbLQ0t.jpg");
+	
+	img[13] = document.createElement("IMG");
+	img[13].setAttribute("src","http://i.imgur.com/IDfLloS.jpg");
+	
+	img [14] = document.createElement("IMG");
+	img[14].setAttribute("src","http://i.imgur.com/o86Kxkw.jpg");
+	
+	img[15] = document.createElement("IMG"); // empty tile
+	//img[15].setAttribute("src","bird [www.imagesplitter.net]-3-3.jpeg");
+}
+
+function drawBoard()
+{
+	//context.clearRect(0,0,canvas.width,canvas.height);
+	
+	window.onload = function()
+	{
+	for(var i = 0; i < n*n; ++i)
+	{
+		context.drawImage(img[board[i]],(i%n) * size, Math.floor(i/n)*size);
+	}
+	}
+}
+
+function clearboard()
+{
+	context.clearRect(0,0,canvas.width,canvas.height);
+	// i made this function because having window.onload() made me not able to
+	// redraw my board after clear Rect for whatever reason. 
+		for(var i = 0; i < n*n; ++i)
+	{
+		context.drawImage(img[board[i]],(i%n) * size, Math.floor(i/n)*size);
+	}
+}
+
+function handleMouseDown(event)
+{
+	var mx = event.pageX - canvas.offsetLeft;
+	var my = event.pageY - canvas.offsetTop;
+	var col = Math.floor(mx / 100);
+	var row = Math.floor(my / 100);
+
+	selected = row * n + col;
+	//alert("selected: " + selected);
+
+	if(isNeighbor(selected,empty))
+	{
+		 
+		board[empty] = board[selected];
+		board[selected] = 15; // set equal to empty tile 
+		empty = selected;
+		clearboard();
+		//drawBoard();
+		solved(); 
+		//alert("you have selected a neighbor to an empty tile");
+	}
+} 
+
+function solved()
+{
+	var i = 0;
+	for(var j = 0; j < 16; ++j)
+	{
+		if(board[j] == j)
+		   ++i;
+	}
+	
+	if(i == 15)
+		alert("Congratulation you win");
+}
+
+
+</script>
+
+</body>
+
+
+</html>
