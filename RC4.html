@@ -1,0 +1,260 @@
+<DOCTYPE !html>
+<html lang="en">
+<head>
+	<title> RC4 Example</title>
+	<!-- Makes it mobile friendly -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- add Bootstrap content delivery network (CDN) -->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<!-- Link JQuery from Google CDN -->
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"> </script>
+
+	
+</head>
+
+<script>
+
+function mod(n,m)
+{
+	return ((n%m)+m) % m;
+}
+
+function swap(array, i, j)
+{
+	var temp = array[j];
+	array[j] = array[i];
+	array[i] = temp;
+	return array; 
+}
+
+// works 
+function SubroutineA(bitlength, decimal) // use array.unshift() to push to front of array 
+{  
+	var remainder;
+	var binary = new Array();
+	var i;
+	for(i = 0; i < bitlength; ++i)
+	{
+		
+		remainder = mod(decimal, 2);
+		binary.unshift(remainder); 
+		if(decimal == 1)
+		{
+			if(i < bitlength-1)  // pads the array with 0's if the algm ends too early
+			{
+				for(var j = i; j < bitlength-1; ++j)
+				{
+					binary.unshift(0);
+				}
+			}
+			break;
+		}
+		decimal = Math.floor(decimal / 2);
+	}
+	return binary; 
+}
+
+// works
+function SubroutineB(binary)
+{
+
+	var decimal;
+	decimal = 0; 
+	var index, power;
+	index = 0;
+	for(var i =binary.length-1; i >= 0; --i)
+	{
+		if(binary[i] == 1)
+		{
+		power = Math.pow(2,index);
+		decimal = decimal + power; 
+		}
+		++index;
+	}
+	
+	return decimal; 
+}
+
+// this function will get our initial key area, which we'll use to get our pseudorandom keystream 
+function getkey()
+{
+	var keystr = document.getElementById("key").value;
+	var n = document.getElementById("n").value; 
+	var key = new Array();  // where we store the integer key 
+	var temp = new Array();
+	var i, j;
+	n = parseInt(n);  // have to convert n into an integer in order for it to work in for loop 
+	for(i = 0; i < keystr.length;++i)
+	{
+		keystr[i] = +keystr[i];   // converts binary string into string of numbers 1 or 0 
+	}
+	// convert the binary key into an array of integers using subroutinea
+	for(i = 0; i < keystr.length; i += n)
+	{
+			for(j = 0; j < n; ++j) // want to split the string into n segements
+			{						// if n = 3 then 000 001 010 ... etc and convert each into integer and put into an array
+				temp.push(keystr[i+j]);
+			}
+			key.push(SubroutineB(temp));
+			temp.length = 0; // empty the array  
+	}
+	
+	// after initializing the key array, we need to fill out completely if key.length < 2^n
+	if(key.length < Math.pow(2,n))
+	{
+		var k = 0;
+		for(i = key.length; i < Math.pow(2,n); ++i)
+		{
+			key.push(key[k]);
+			++k;
+		}
+	}
+	
+	return key; //now that key has been properly filled up, return it and we'll use it in our RC4 Algorithm . 
+}
+
+// we will get our pseduo randomly generated keystream here 
+function RC4()	// following the pseudo code from the examples 
+{
+	var key = getkey(); 
+	var keystream = new Array(); // where we will fill keystream array 
+	var i, j,r,t;
+	var S = new Array(); 
+	i = j = r = t = 0; 
+	var n = document.getElementById("n").value; 
+	var l = document.getElementById("l").value;
+	n = parseInt(n); 
+	l = parseInt(l); 
+
+	// we will first fill in our S array with numbers 0 to 2^(n) - 1
+	for(i = 0; i < Math.pow(2,n); ++i)
+	{
+		S.push(i); 
+	}
+
+	// first for loop
+	for(i = 0; i < Math.pow(2,n);++i)
+	{
+		j = mod((j+S[i]+key[i]),Math.pow(2,n));
+		S = swap(S,i,j);
+	}
+	i = j = 0; // reset the values of i & j 
+	// second for loop 
+	for(r = 0; r < l; ++r)
+	{
+		i = mod(i+1,Math.pow(2,n));  // i = i + 1 mod 2^n
+		j = mod(j+S[i],Math.pow(2,n));  // j = j + S[i] mod 2^n
+		S = swap(S,i,j); 
+		t = mod(S[i]+S[j],Math.pow(2,n)); // t = S[i] + S[j] mod 2^n
+		keystream.push(S[t]);
+	}
+	// keystream gotten by here, we will now convert it into a long binary string
+	var keystream_bin = new Array(); 
+	keystream_bin.length = 0; // set to empty array 
+	for(i = 0; i < keystream.length;++i)
+	{
+		keystream_bin = keystream_bin.concat(SubroutineA(n,keystream[i])); 
+	}
+	return keystream_bin;
+}
+
+function decrypt_ct()
+{
+	var ct = document.getElementById("ct").value;
+	var i, j; 
+	for(i = 0; i < ct.length;++i)
+	{
+		ct[i] = +ct[i];   // converts binary string into string of numbers 1 or 0 
+	}
+	var keystream = RC4();
+	var plaintext_ascii = new Array();
+	
+	for(i = 0; i < keystream.length; ++i)
+	{
+		plaintext_ascii.push(ct[i] ^ keystream[i]); // XOR's CT and keystream.
+	}
+	plaintext_ascii = plaintext_ascii.join(""); // removes comma's 
+	document.getElementById("solution").innerHTML = plaintext_ascii;  
+	bin_to_ascii(plaintext_ascii);  // since the pt is in binary, we need to convert it into ascii characters
+}
+
+function bin_to_ascii(binary) // converts ascii characters into plaintext 
+{
+	var sentence = '';
+	
+	for(var i = 0; i < binary.length; i += 8)
+	{
+		var c = 0;
+		for(var j = 0; j < 8; j++)
+		{
+			c <<= 1;
+			c |= parseInt(binary[i+j]);
+		}
+		sentence += String.fromCharCode(c); 
+	}
+	
+	document.getElementById("after_sol").innerHTML = sentence; 
+}
+
+</script>
+
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="projects.html">Back</a>
+    </div>
+
+  </div>
+</nav>
+<!-- End Navigation -->
+	
+<!-- Start RC4 Example -->
+<div class="container" style="border:thin solid black">
+	<h2> Example of RC4 Stream Cipher (RC4-2) </h2>
+	<p> <span class="glyphicon glyphicon-time"></span> April 16, 2016 </p>	
+	<br>
+	
+	<form role="form">
+		<div class="form-group">
+			<label for="n"> n: </label>
+			<input type="number" class="form-control" id="n" placeholder="enter an n">
+		</div>
+		<div class="form-group">
+			<label for="l"> l: </label>
+			<input type="number" class="form-control" id="l" placeholder="enter an l">
+		</div>
+		<div class="form-group">
+			<label for="key"> key: </label>
+			<input type="text" class="form-control" id="key" placeholder="Enter key (binary rep ex. 0101010)">
+		</div>
+		<div class="form-group">
+			<label for="ct"> ct: </label>
+			<input type="text" class="form-control" id="ct" placeholder="Enter binary ciphertext here">
+		</div>
+		
+		<br>
+		<p id="solution" style="white-space: nowrap; overflow: auto;"> Solution Here. First in Binary then in ASCII characters (copy paste the below numbers into their corresponding labels) </p> 
+		<br>
+		<p id="after_sol"> </p>
+		<br>
+		<p id="keytest"></p>
+		<button type="button" class="btn btn-default" onclick="decrypt_ct()"> Decrypt </button>
+	</form>
+	
+	<br>
+	
+	<p> Where n = 8, l = 28 and the key = </p>
+	<br> 
+	<p align="center">10111001010100111111101100100100011000001100101001010001100001110001010111010001</p>
+	<br>
+	<p> We will decrypt cipher text: </p>
+	<p align="center"style="white-space: nowrap; overflow: auto;"> 11100001101110100011001100100101111001001010011100001110000100100000101100111100110000001011010010011000001010001110111100010110101011011100100000100111111000011010101000101111010111010110001111111110110111110100000011100100</p>
+</div>
+
+
+<!-- END RC4 Example -->
+</body>
+</html>
