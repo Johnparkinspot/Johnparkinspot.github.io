@@ -14,6 +14,7 @@
 
 <script>
 
+// helper functions
 function mod(n,m)
 {
 	return ((n%m)+m) % m;
@@ -26,6 +27,7 @@ function swap(array, i, j)
 	array[i] = temp;
 	return array; 
 }
+// end helper function 
 
 // works 
 function SubroutineA(bitlength, decimal) // use array.unshift() to push to front of array 
@@ -113,8 +115,8 @@ function getkey()
 	return key; //now that key has been properly filled up, return it and we'll use it in our RC4 Algorithm . 
 }
 
-// we will get our pseduo randomly generated keystream here 
-function RC4()	// following the pseudo code from the examples 
+// we will get our pseudo randomly generated keystream here 
+function RC4()	// following the pseudo code from the lecture
 {
 	var key = getkey(); 
 	var keystream = new Array(); // where we will fill keystream array 
@@ -153,7 +155,7 @@ function RC4()	// following the pseudo code from the examples
 	keystream_bin.length = 0; // set to empty array 
 	for(i = 0; i < keystream.length;++i)
 	{
-		keystream_bin = keystream_bin.concat(SubroutineA(n,keystream[i])); 
+		keystream_bin = keystream_bin.concat(SubroutineA(n,keystream[i])); // concat the arrays of bin numbers again and again
 	}
 	return keystream_bin;
 }
