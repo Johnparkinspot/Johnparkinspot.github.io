@@ -3,22 +3,45 @@
 
 <html>
 
+<head>
+	<title> Projects</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- add Bootstrap content delivery network (CDN) -->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<!-- Link JQuery from Google CDN -->
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"> </script>
+	
+</head>
+
 <body>
 
+<!-- Navigation -->
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="projects.html">Back</a>
+    </div>
+
+  </div>
+</nav>
+<!-- End Navigation -->
+
+
+<div class="container" style="border: thin solid black" align="center">
+
 <canvas id = "canvas" height = "400" width = "400" style = "border:1px solid #d3d3d3;"> </canvas>
+
+</div>
 
 <p id = "input"> </p>
 <script>
 // to get square postion number
 // tile 13 / 4 = 3 (row number)
 // tile 13 % 4 = 1 (column number)
-
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
-
 // whenever user clicks on mouse, function will be executed
 canvas.addEventListener("mousedown", handleMouseDown);
-
 // load the pics
 var n = 4;
 var size = Math.floor(canvas.height / n);
@@ -26,13 +49,9 @@ var img = [];
 var empty ; // initialized to slot 15 b4 randomization process
 var selected;
 var board = [];
-
 loadImages();
 setupBoard();
 drawBoard();
-
-
-
 function setupBoard()
 {
 	// randomize board
@@ -40,7 +59,6 @@ function setupBoard()
 	{
 		board[i] = i;
 	}
-
 	// shuffling process 
 	for(var size = n*n-1; size > 1;--size)
 	{   // math.random gives random from 0 to 1 scale by size
@@ -58,7 +76,6 @@ function setupBoard()
 		//alert("empty is: " + k);
 		empty = k;}
 	} 
-
 	while(checkSolvability() != 1) // if solvable doesnt return 1, keep shuffling board
 	{ //  it is important to do this loop after setting empty in above for loop
 		//alert (" we need to randomize because current isn't solvable");
@@ -70,7 +87,6 @@ function setupBoard()
 		s = s + ", " + board[i];
 	//alert(s);
 }
-
 function shuffleboard()
 {
 	for(var size = n*n-1; size > 1;--size)
@@ -90,7 +106,6 @@ function shuffleboard()
 		empty = k;}
 	} 
 }
-
 // we are determing solvability by following the formula from
 // this website: https://www.cs.bham.ac.uk/~mdr/teaching/modules04/java2/TilesSolvability.html
 function checkSolvability()
@@ -134,8 +149,6 @@ function checkSolvability()
 	
 	
 }
-
-
 function isNeighbor(selected, empty)
 {   
 	//lazy method
@@ -237,22 +250,16 @@ function isNeighbor(selected, empty)
 		else return 0;
 	}
 }
-
 function loadImages()
 {
-
 	img[0] = document.createElement("IMG");
 	img[0].setAttribute("src","http://i.imgur.com/dWIYm2f.jpg");
-
 	img[1] = document.createElement("IMG");
 	img[1].setAttribute("src","http://i.imgur.com/VGtGXZB.jpg");
-
 	img[2] = document.createElement("IMG");
 	img[2].setAttribute("src","http://i.imgur.com/rx6LmmO.jpg");
-
 	img[3] = document.createElement("IMG");
 	img[3].setAttribute("src","http://i.imgur.com/ZmSrOlm.jpg");
-
 	img[4] = document.createElement("IMG");
 	img[4].setAttribute("src","http://i.imgur.com/VsKnlrd.jpg");
 	
@@ -276,7 +283,6 @@ function loadImages()
 	
 	img[11] = document.createElement("IMG");
 	img[11].setAttribute("src","http://i.imgur.com/jtGw616.jpg");
-
 	img[12] = document.createElement("IMG");
 	img[12].setAttribute("src","http://i.imgur.com/nxbLQ0t.jpg");
 	
@@ -289,7 +295,6 @@ function loadImages()
 	img[15] = document.createElement("IMG"); // empty tile
 	//img[15].setAttribute("src","bird [www.imagesplitter.net]-3-3.jpeg");
 }
-
 function drawBoard()
 {
 	//context.clearRect(0,0,canvas.width,canvas.height);
@@ -302,7 +307,6 @@ function drawBoard()
 	}
 	}
 }
-
 function clearboard()
 {
 	context.clearRect(0,0,canvas.width,canvas.height);
@@ -313,17 +317,14 @@ function clearboard()
 		context.drawImage(img[board[i]],(i%n) * size, Math.floor(i/n)*size);
 	}
 }
-
 function handleMouseDown(event)
 {
 	var mx = event.pageX - canvas.offsetLeft;
 	var my = event.pageY - canvas.offsetTop;
 	var col = Math.floor(mx / 100);
 	var row = Math.floor(my / 100);
-
 	selected = row * n + col;
 	//alert("selected: " + selected);
-
 	if(isNeighbor(selected,empty))
 	{
 		 
@@ -336,7 +337,6 @@ function handleMouseDown(event)
 		//alert("you have selected a neighbor to an empty tile");
 	}
 } 
-
 function solved()
 {
 	var i = 0;
@@ -349,8 +349,6 @@ function solved()
 	if(i == 15)
 		alert("Congratulation you win");
 }
-
-
 </script>
 
 </body>
