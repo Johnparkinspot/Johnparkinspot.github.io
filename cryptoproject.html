@@ -14,14 +14,31 @@
 </head>
 
 <script>
-
 var alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
 var letter_freq = [0.08167,0.01492,0.02782,0.04253,0.12702,0.02228,0.02015,0.06094,0.06966,0.00153,0.00772,0.04025,0.02406,0.06749,0.07507,0.01929,0.00095,0.05987,0.06327,0.09056,0.02758,0.00978,0.02361,0.0015,0.01974,0.00074];
-
 // helper functions
 function mod(n,m)
 {
 	return ((n%m)+m) % m;
+}
+
+//input 1d array
+//output: returns the INDEX of the lowest value in the array 
+function get_lowest_index(a)
+{
+	var temp; 
+	var index = 0; 
+	temp = a[0]
+	for(var i = 1; i < a.length; ++i)
+	{
+			if(a[i] < temp)
+			{
+				temp = a[i];
+				index = i; 
+			}
+	}
+	
+	return index; 
 }
 
 function dec_to_bin(bitlength, decimal) // use array.unshift() to push to front of array 
@@ -49,7 +66,6 @@ function dec_to_bin(bitlength, decimal) // use array.unshift() to push to front 
 	}
 	return binary; 
 }
-
 function bin_to_dec(binary)
 {
 	var decimal;
@@ -68,7 +84,7 @@ function bin_to_dec(binary)
 	
 	return decimal; 
 }
-
+//input binary array 
 function binary_to_letter(binary)
 {
 	var letter = new Array();
@@ -82,7 +98,6 @@ function binary_to_letter(binary)
 		{
 			temp.push(binary[i+j]);
 		}
-
 		dec = bin_to_dec(temp); 
 		//dec = mod(dec,26); 
 		temp = [];
@@ -93,11 +108,9 @@ function binary_to_letter(binary)
 		else
 		letter.push(alphabet[dec]);
 	}
-
 	return letter;
 }
 // end helpers *** 
-
 //tokenzies binary string into blocks of 5 (works)
 // [0][0..4] = 1st 5 bit block, [1][0..4] = 2nd 5 bit block 
 function tokanize_binary_5bits(array)
@@ -131,8 +144,6 @@ function tokanize_binary_5bits(array)
 	temp = 0; 
 	return a;
 }
-
-
 // 3d array created (works)
 // [0] (first split) [0] 1st block [0..4] binary block
 function split_tokenized(tokenized,splits)
@@ -144,7 +155,6 @@ function split_tokenized(tokenized,splits)
 	{
 		a[i] = [];
 	} // have splits amount of strings
-
 	for(var i = 0; i < splits; ++i)
 	{
 		for(var j = 0+i; j < tokenized.length; j += splits)
@@ -157,14 +167,9 @@ function split_tokenized(tokenized,splits)
 			++temp;
 		}
 		temp = 0; 
-
 	}
-
 	return a; 
-
 }
-
-
 function start1()
 {
 	var v = document.getElementById("ct").value; // get ct from form
@@ -179,25 +184,142 @@ function start1()
 	
 	// tokenizes ct into 5 bit blocks
 	var tokenized = tokanize_binary_5bits(ct); 
+	var splits = 22; 
+	// keylength is most likely length 15 or 30 
+	var split = split_tokenized(tokenized,splits);
+	//alert(binary_to_letter(split[0][0]));
+	//alert(avgIOC(split));
 	
-	var split = split_tokenized(tokenized,3);
-	alert(split[0].length);
-	alert(split[1].length);
-	alert(split[2].length);  
+	var chi = chisquared(split); 
+	
+	for(var i = 0; i < splits; ++i)
+	{
+	
+		alert(get_lowest_index(chi[i]) + ", " + chi[i][get_lowest_index(chi[i])]);
+	}
+	
 }
 
 
-/*
+//input: 3d array split & tokenized array
+//output: avgIOC number 
+function avgIOC(a)
+{
+	var avgIOC = 0;
+	var sigma; 
+	var total;
+	var fi = 0; 
+	sigma = total = 0; 
+	for(var i = 0; i < a.length; ++i) // iterate thru splitted strings
+	{
+		sigma = 0;
+		for(var j = 0; j < 26; ++j) // iterate thru alphabet 
+		{
+			fi = 0; 
+			for(k = 0; k < a[i].length; ++k) // iterate thru tokenized 5-bit blocks (can convert to letters)
+			{
+				if(binary_to_letter(a[i][k]) == alphabet[j]) // check if equal to a - z 
+				{
+					fi = fi + 1;
+				}
+			}
+			sigma = sigma + (fi * (fi-1)); 
+		}
+		sigma = sigma / (a[i].length * (a[i].length - 1));
+		total = total + sigma; 
+	}
+	
+	avgIOC = total / a.length; 
+	
+	return avgIOC; 
+} 
 
+//input: 3d array 
+//output: chisquared 2d array  (Dont know if works) 
+function chisquared(a)
+{
+	// chisquared hold all the chisquared numbers [number of splits] [26 entries for each alphabet]
+	var chisquared = []; 
+	var expectedvalue = []; 
+	var count = [];
+	var sigma = 0; 
+	var total = 0; 
+	
+	for(var i = 0; i < a.length; ++i)
+	{
+		chisquared[i] = []; 
+		for(var j = 0; j < 26; ++j)
+		{
+		 chisquared[i][j] = 0; 
+		}
+	}
+	
+	
+	
+	for(var i = 0; i < a.length; ++i)
+	{
+		for(var key = 0; key < 26; ++key)
+		{
+				for(var s = 0; s < a[i].length; ++s) // where array shifting will occur 
+				{
+					var temp = bin_to_dec(a[i][s]); 
+					temp = mod(temp-key,26); 
+					var newletter = letter_to_binary(temp); 
+					a[i][s] = newletter;  // set equal to new letter in 5-bit binary form 
+				}
+				
+				for(var k = 0; k < 26; ++k) // accumulate count and expectvalue in arrays
+				{
+					count.push(countchar(a[i],alphabet[k]));
+					expectedvalue.push(letter_freq[k] * a[i].length); 
+				}
+			
+				for(var p = 0; p < 26; ++p) // where chi squared calculations occur 
+				{	
+					sigma = sigma + (Math.pow(count[p]-expectedvalue[p],2) / expectedvalue[p]); 
+				}
+				chisquared[i][key] = sigma; 
+			sigma = 0; 	
+			count = [];  // empty array 
+			expectedvalue = []; 
+		}
+	}
+	return chisquared;
+}
+
+//input: 2d array ( a[i]) and character (used for chisquared fcn)
+//output: count of character in a[i] 
+function countchar(a,letter)
+{
+	var count = 0;
+	
+	for(var i = 0; i < a.length; ++i)
+	{
+			if(binary_to_letter(a[i]) == letter)
+			{
+			++count;
+			}		
+	}
+	
+	return count; 
+}
+
+//input: letter character a(0) - z(25) in integer form  
+//output: 5-bit binary array (00000 - 11001) 
+function letter_to_binary(letterkey)
+{
+	var binary = [];
+	binary = dec_to_bin(5,letterkey);
+	return binary; 
+}
+/*
 function print_array(a)
 {
 	var t = [];
 	for(var i = 0; i < a.length; ++i)
 	{
-
 	}
 }
-
 */ 
 </script>
 
@@ -215,7 +337,7 @@ function print_array(a)
   </div>
 </nav>
 <!-- End Navigation -->
-
+]
 
 <div class="container" style="border: thin solid black">
 	<h2> Crypto Project - Decrypting XOR ciphers (PT XOR KEYSTREAM = CT) </h2> 
