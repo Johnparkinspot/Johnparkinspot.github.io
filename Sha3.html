@@ -13,12 +13,10 @@
 </head>
 
 <script>
-
 function mod(n,m)
 {
 	return ((n%m)+m) % m;
 }
-
 function create_3d_array(x,y,z) // creates 3d array and sets all bits to 0
 {
 	var a = [];
@@ -30,8 +28,6 @@ function create_3d_array(x,y,z) // creates 3d array and sets all bits to 0
 				a[i][j] = [];
 			}
 		}  // created a 3-d array (fill all with 0's so can set size & modify)
-
-
 		for(var i = 0; i < x; ++i)
 		{
 			for(var j = 0; j < y; ++j)
@@ -43,9 +39,7 @@ function create_3d_array(x,y,z) // creates 3d array and sets all bits to 0
 			}
 		} // filled a(5)(5)(64) all with 0's, then can modify each index
 		return a;
-
 }
-
 // a[i][j][k] = v[64(5j + i) + k]
 //output: 3d array 
 function SHA3_1(v) // this array must be of size 1600
@@ -62,7 +56,6 @@ function SHA3_1(v) // this array must be of size 1600
 		
 		a = create_3d_array(5,5,64);
 		// now we have 3-d array "a" 5x5x64, all filled with zeroes can then modify
-
 		//// a[i][j][k] = v[64(5j + i) + k]
 		for(var i = 0; i < 5; ++i)
 		{
@@ -74,12 +67,9 @@ function SHA3_1(v) // this array must be of size 1600
 				}
 			}
 		}
-
 		return a;
 	} 
-
 } 
-
 function get_3d_array() // creates 3-d array that's been pasted onto the form 
 {
 	var a;
@@ -109,7 +99,6 @@ function get_3d_array() // creates 3-d array that's been pasted onto the form
 	
 	return a; 
 }
-
 function print_3d_array(a) // test
 {
 	var t = [];
@@ -127,8 +116,6 @@ function print_3d_array(a) // test
 	t = t.join("");
 	document.getElementById("sha3_output").innerHTML = t;
 }
-
-
 function start()
 {
 	var v = new Array();
@@ -143,11 +130,9 @@ function start()
 	}
 	var a = SHA3_1(v); // got the 3-d array here
 	// removes comma's
-
 	print_3d_array(a);
 	
 }
-
 function start2() // tests sha3-2
 {
 	var a = get_3d_array();
@@ -155,7 +140,6 @@ function start2() // tests sha3-2
 	p = p.join("");
 	document.getElementById("sha3_output").innerHTML = p; 
 }
-
 function start3() // tests sha3-3
 {
 	var a = get_3d_array();
@@ -165,7 +149,6 @@ function start3() // tests sha3-3
 	print_3d_array(aout); 
 	
 }
-
 function start4() // tests sha3-4 
 {
 	var a = get_3d_array(); 
@@ -174,7 +157,6 @@ function start4() // tests sha3-4
 	print_3d_array(aout); 
 	
 }
-
 function start5()
 {
 	var a = get_3d_array();
@@ -182,7 +164,6 @@ function start5()
 	print_3d_array(aout); 
 	
 }
-
 function start6()
 {
 	var a = get_3d_array(); 
@@ -190,7 +171,6 @@ function start6()
 	print_3d_array(aout); 
 	
 }
-
 // for iotain iotaout (checking) roundindex = 0 . *** for hw roundindex = 13 
 function start7()
 {
@@ -198,11 +178,8 @@ function start7()
 	var ir = document.getElementById("ir").value;
 	
 	var aout = iota(a,ir);
-
 	print_3d_array(aout); 
-
 }
-
 // turns 3-d back into 1-d array 
 function sha3_2(a)
 {	// v[64(5j+i)+k] = a[i][j][k]
@@ -211,7 +188,6 @@ function sha3_2(a)
 	{
 		v.push(0);
 	} // setting array to size 1600 by filling with 1600 0's
-
 	for(var i = 0; i < 5; ++i)
 	{
 		for(var j = 0; j < 5; ++j)
@@ -222,16 +198,13 @@ function sha3_2(a)
 			}
 		}
 	}
-
 	return v;
 }
-
 function theta(a) // input a 3d array, return a 3d array 
 {
 	var aout = create_3d_array(5,5,64);
 	var temp, temp1, temp2;
 	temp = temp1 = temp2 = 0; 
-
 	for(var i = 0; i < 5; ++i)
 	{
 		for(var j = 0; j < 5;++j)
@@ -256,7 +229,6 @@ function theta(a) // input a 3d array, return a 3d array
 	
 	return aout; 
 }
-
 // works ** 
 // sha-4 implement roe 
 // input: 3d array ain
@@ -295,7 +267,6 @@ function roe(ain)
 	
 	return aout; 
 }
-
 // works *** 
 //sha3-5 implement pi
 //input: 3d array ain
@@ -317,7 +288,6 @@ function pi(ain)
 	
 	return aout; 
 }
-
 // works *** 
 //sha3-6 implement chi
 //input: 3d array ain
@@ -346,7 +316,6 @@ function chi(ain)
 	
 	return aout; 
 }
-
 //sha3-7 implement iota
 //input: 3d array and a round number between 0..23
 //output: 3d array 
@@ -354,29 +323,30 @@ function iota(ain,roundindex)
 {
 	var aout = create_3d_array(5,5,64);
 	var bit = create_3d_array(5,5,64); 
-	
+	var t = 0;
 	var w = [1,0,0,0,0,0,0,0];
 	var rc = [];
-	rc.push(w[0]); 
+	rc.push(w[0]);
+	var temp;
+
+	
 	for(var i = 1; i < (7*24); ++i)
 	{
-		for(var j = 0; j < 8; ++j)
-		{
-			if(j == 7)
-			{
-				w[j]  = w[0] ^ w[4] ^ w[5] ^ w[6]; 
-			}
-			else
-			{
-			w[j] = w[j+1];
-			}
-		}
+		temp = w[0] ^ w[4] ^ w[5] ^ w[6]; 
+		w[0] = w[1];
+		w[1] = w[2];
+		w[2] = w[3];
+		w[3] = w[4];
+		w[4] = w[5];
+		w[5] = w[6];
+		w[6] = w[7];
+		w[7] = temp;
 		rc.push(w[0]); 
 	}
 	
 	for(var l = 0; l <= 6; ++l)
 	{
-		bit[0][0][Math.pow(2,l)-1] = rc[mod(l+7*roundindex,rc.length)];
+		bit[0][0][Math.pow(2,l)-1] = rc[l+7*roundindex];
 	}
 	
 	for(var i = 0; i < 5; ++i)
@@ -392,9 +362,9 @@ function iota(ain,roundindex)
 	
 	return aout; 
 }
-
 function simplifiedsha()
 {
+	
 	var a = document.getElementById("a").value;
 	var input = []; 
 	for(var i =0; i < a.length;++i)
@@ -407,20 +377,39 @@ function simplifiedsha()
 	
 	input = padding(input); 
 	// convert 1d to 3d array 
-	input = input.join("");
-	document.getElementById("sha3_output").innerHTML = input; 
+	//input = input.join("");
+	//document.getElementById("sha3_output").innerHTML = input; 
+	var t = 0;
 	
-	
+ /* For hw Binary string 
+	input = [];
+	input.push(1);
+	for(var i = 1; i < 1087;++i)
+	{
+		input.push(0);
+	}
+	input.push(1); 
+	for(var i = 0; i < 512; ++i)
+	{
+		input.push(0);
+	}
+	alert(input[0]);
+	alert(input[1087]);
+	alert(input.length);
+	*/
+
 	var input_3d = SHA3_1(input);  
+	var input_3d2 = create_3d_array(5,5,64);
 	// hash fcns start here STARTING with theta ** Doesnt work ** 
-	for(var i = 0; i < 24; ++i)
+	for(var i =0 ; i < 24; ++i)
 	{
 	input_3d = theta(input_3d);
 	input_3d = roe(input_3d);
 	input_3d = pi(input_3d);
-	input_3d = chi(input_3d); 
+	input_3d = chi(input_3d);
 	input_3d = iota(input_3d,i);
 	}
+
 	var output_1d = sha3_2(input_3d); 
 	var output_final = [];
 	// the output is the first 256 bits, so we will only display those 
@@ -430,8 +419,8 @@ function simplifiedsha()
 	}
 	output_final = output_final.join("");
 	document.getElementById("sha3_output").innerHTML = output_final; 
-	
-}
+
+} 
 
 // takes 1d array
 // pads it to length 1088 and concats with 512 0's 
@@ -465,12 +454,11 @@ function padding(a)
 	// then add 512 0's
 	a = a.concat(zeroes);
 	return a; 
-
 }
+
 
 function compare()
 {
-
 	var o = document.getElementById("compare1").value;
 	var c = document.getElementById("compare2").value;
 	var output = [];
