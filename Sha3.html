@@ -47,6 +47,7 @@ function create_3d_array(x,y,z) // creates 3d array and sets all bits to 0
 }
 
 // a[i][j][k] = v[64(5j + i) + k]
+//output: 3d array 
 function SHA3_1(v) // this array must be of size 1600
 {
 	if(v.length != 1600)
@@ -167,6 +168,43 @@ function start3() // tests sha3-3
 	
 }
 
+function start4() // tests sha3-4 
+{
+	var a = get_3d_array(); 
+	var aout = roe(a); 
+	
+	print_3d_array(aout); 
+	
+}
+
+function start5()
+{
+	var a = get_3d_array();
+	var aout = pi(a);
+	print_3d_array(aout); 
+	
+}
+
+function start6()
+{
+	var a = get_3d_array(); 
+	var aout = chi(a); 
+	print_3d_array(aout); 
+	
+}
+
+// for iotain iotaout (checking) roundindex = 0 . *** for hw roundindex = 13 
+function start7()
+{
+	var a = get_3d_array();
+	var ir = document.getElementById("ir").value;
+	
+	var aout = iota(a,ir);
+
+	print_3d_array(aout); 
+
+}
+
 // turns 3-d back into 1-d array 
 function sha3_2(a)
 {	// v[64(5j+i)+k] = a[i][j][k]
@@ -221,6 +259,212 @@ function theta(a) // input a 3d array, return a 3d array
 	return aout; 
 }
 
+// works ** 
+// sha-4 implement roe 
+// input: 3d array ain
+// output: 3d array aout
+function roe(ain)
+{
+	var aout = create_3d_array(5,5,64);
+	var fivebyfive = [];
+	var matrix = [0,36,3,41,18,1,44,10,45,2,62,6,43,15,61,28,55,25,21,56,27,20,39,8,14];
+	var temp = 0; 
+	var t = 0; 
+	for(var i = 0; i < 5; ++i)
+	{
+		fivebyfive[i] = []; 
+	}
+	for(var i = 0; i < 5; ++i)
+	{
+		for(var j = 0; j < 5; ++j)
+		{
+			fivebyfive[i][j] = matrix[temp];
+			++temp; 
+		}
+	}
+	
+	for(var i = 0; i < 5; ++i)
+	{
+		for(var j = 0; j < 5; ++j)
+		{
+			for(var k = 0; k < 64; ++k)
+			{ // easy matrixless solution
+				t = fivebyfive[mod(i,5)][mod(j,5)];
+				aout[i][j][k] = ain[i][j][mod(k-t,64)]; // works typo in the lecture notes (was i + 1 j +1)
+			}
+		}
+	}
+	
+	return aout; 
+}
+
+// works *** 
+//sha3-5 implement pi
+//input: 3d array ain
+//output: 3d array aout
+function pi(ain)
+{
+	var aout = create_3d_array(5,5,64);
+	
+	for(var i = 0; i < 5; ++i)
+	{
+		for(var j = 0; j < 5; ++j)
+		{
+			for(var k = 0; k < 64; ++k)
+			{
+				aout[j][mod(2*i+3*j,5)][k] = ain[i][j][k];
+			}
+		}
+	}
+	
+	return aout; 
+}
+
+// works *** 
+//sha3-6 implement chi
+//input: 3d array ain
+//aout: 3d array aout
+function chi(ain)
+{
+	var aout = create_3d_array(5,5,64);
+	var t1 = 0;
+	var t2 = 0; 
+	var t3 = 0; 
+	
+	
+	for(var i = 0; i < 5; ++i)
+	{
+		for(var j = 0; j < 5; ++j)
+		{
+			for(var k = 0; k < 64; ++k)
+			{
+				t1 = ain[mod(i+1,5)][j][k] ^ 1;
+				t2 = ain[mod(i+2,5)][j][k];
+				t3 = t1 * t2; 
+				aout[i][j][k] = ain[i][j][k] ^ t3; 
+			}
+		}
+	}
+	
+	return aout; 
+}
+
+//sha3-7 implement iota
+//input: 3d array and a round number between 0..23
+//output: 3d array 
+function iota(ain,roundindex)
+{
+	var aout = create_3d_array(5,5,64);
+	var bit = create_3d_array(5,5,64); 
+	
+	var w = [1,0,0,0,0,0,0,0];
+	var rc = [];
+	rc.push(w[0]); 
+	for(var i = 1; i < (7*24); ++i)
+	{
+		for(var j = 0; j < 8; ++j)
+		{
+			if(j == 7)
+			{
+				w[j]  = w[0] ^ w[4] ^ w[5] ^ w[6]; 
+			}
+			else
+			{
+			w[j] = w[j+1];
+			}
+		}
+		rc.push(w[0]); 
+	}
+	
+	for(var l = 0; l <= 6; ++l)
+	{
+		bit[0][0][Math.pow(2,l)-1] = rc[mod(l+7*roundindex,rc.length)];
+	}
+	
+	for(var i = 0; i < 5; ++i)
+	{
+		for(var j = 0; j < 5; ++j)
+		{
+			for(var k = 0 ; k < 64; ++k)
+			{
+				aout[i][j][k] = ain[i][j][k] ^ bit[i][j][k];
+			}
+		}
+	}
+	
+	return aout; 
+}
+
+function simplifiedsha()
+{
+	var a = document.getElementById("a").value;
+	var input = []; 
+	for(var i =0; i < a.length;++i)
+	{
+		if(a[i] == '1' || a[i] == '0')
+		{
+			input.push(parseInt(a[i]));
+		}
+	}
+	
+	input = padding(input); 
+	// convert 1d to 3d array 
+	var input_3d = SHA3_1(input);  
+	// hash fcns start here STARTING with theta ** Doesnt work ** 
+	for(var i = 0; i < 24; ++i)
+	{
+	input_3d = theta(input_3d);
+	input_3d = roe(input_3d);
+	input_3d = pi(input_3d);
+	input_3d = chi(input_3d); 
+	input_3d = iota(input_3d,i);
+	}
+	var output_1d = sha3_2(input_3d); 
+	var output_final = [];
+	// the output is the first 256 bits, so we will only display those 
+	for(var i = 0; i < 256; ++i)
+	{
+		output_final.push(output_1d[i]);
+	}
+	output_final = output_final.join("");
+	document.getElementById("sha3_output").innerHTML = output_final;
+	
+}
+
+// takes 1d array
+// pads it to length 1088 and concats with 512 0's 
+function padding(a)
+{
+	var padded = [];
+	var length = a.length; 
+	var zeroes = [];
+	var two_ones = [1,1];
+	for(var i = 0; i < 512; ++i)
+	{
+		zeroes.push(0);
+	}
+	
+	if(mod(length,1088) == 1086) // check if just need to append 2 1's
+	{
+		padded.push(1);
+		padded.push(1); 
+		a = a.concat(padded); 
+	}
+	else
+	{
+		// add one 1 here
+		a.push(1);
+		while(mod(a.length,1088) != 1087)
+		{ // keep adding 0's to array a
+			a.push(0);		
+		}
+		a.push(1); 
+	}
+	// then add 512 0's
+	a = a.concat(zeroes);
+	return a; 
+
+}
 </script>
 
 <body>
@@ -244,14 +488,21 @@ function theta(a) // input a 3d array, return a 3d array
 	<form role="form">
 		<div class="form-group">
 			<label for="a"> a: </label>
-			<input type="text" class="form-control" id="a" placeholder="Enter array a (1600 bits)">
+			<input type="text" class="form-control" id="a" placeholder="Enter array a (1-d) (1600 bits)">
 			<label for="3-d">3d:</label>
 			<input type="text" class="form-control" id="3d" placeholder="Enter 3d array (1600 bits)">
+			<label for="ir">IR:</label>
+			<input type="number" class="form-control" id="ir" placeholder="Enter Round Index 0 - 23 here (for fcn IOTA)"> 
 		</div>
 
 		<button type="button" class="btn btn-default" onclick="start()">SHA3_1_Test</button>
 		<button type="button" class = "btn btn-default" onclick="start2()">SHA3_2 Test </button>
 		<button type="button" class = "btn btn-default" onclick="start3()">Theta </button> 
+		<button type ="button" class= "btn btn-default" onclick="start4()">Roe (#4) </button> 
+		<button type = "button" class="btn btn-default" onclick ="start5()">Pi (#5) </button> 
+		<button type = "button" class = "btn btn-default" onclick = "start6()">Chi (#6) </button> 
+		<button type = "button" class = "btn btn-default" onclick = "start7()">Iota (#7) </button> 
+		<button type = "button" class = "btn btn-default" onclick = "simplifiedsha()">Simplified Sha3</button> 
 
 	</form>
 	<br> <br>
@@ -264,6 +515,9 @@ function theta(a) // input a 3d array, return a 3d array
 	<p>To test Theta, paste 3d array into box 3d and press the Theta button. Outputs a 3d array a[0][0][0], a[0][0][1], a[0][0][2] ...</p>
 	<p id="v2box" align="center" style="white-space:nowrap; overflow:auto;">[[[0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1], [0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0], [0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1], [0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1], [1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1]], [[0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1], [1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0], [1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0], [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0]], [[1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1], [0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0], [0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0], [1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1]], [[0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0], [0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1], [1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0], [0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1], [1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1]], [[0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0], [0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1], [0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1], [0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0], [0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0]]]</p>
 	<br>
+	<p>Input for Simplified Sha Below</p>
+	<p id="shain" align="center" style = "white-space:nowrap; overflow:auto;">[0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1]</p>
+	<br>
 	<p id="sha3_output" style="white-space: nowrap; overflow:auto;">Output</p>
 	
 </div>
@@ -273,4 +527,4 @@ function theta(a) // input a 3d array, return a 3d array
 
 
 
-<html>
+</html>
