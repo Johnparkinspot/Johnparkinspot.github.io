@@ -70,7 +70,7 @@ function SHA3_1(v) // this array must be of size 1600
 			{
 				for(var k = 0; k < 64; ++k)
 				{
-					a[i][j][k] = v[mod(64*(5*j+i)+k,1600)];
+					a[i][j][k] = v[mod((64*(5*j+i))+k,1600)];
 				}
 			}
 		}
@@ -112,7 +112,7 @@ function get_3d_array() // creates 3-d array that's been pasted onto the form
 
 function print_3d_array(a) // test
 {
-	var t = new Array();
+	var t = [];
 	for(var i = 0; i < 5; ++i)
 	{
 		for(var j = 0; j < 5;++j)
@@ -144,9 +144,7 @@ function start()
 	var a = SHA3_1(v); // got the 3-d array here
 	// removes comma's
 
-	var p = sha3_2(a); // turns back into 1d array
-	p = p.join("");
-	document.getElementById("sha3_output").innerHTML = p;
+	print_3d_array(a);
 	
 }
 
@@ -409,6 +407,10 @@ function simplifiedsha()
 	
 	input = padding(input); 
 	// convert 1d to 3d array 
+	input = input.join("");
+	document.getElementById("sha3_output").innerHTML = input; 
+	
+	
 	var input_3d = SHA3_1(input);  
 	// hash fcns start here STARTING with theta ** Doesnt work ** 
 	for(var i = 0; i < 24; ++i)
@@ -427,7 +429,7 @@ function simplifiedsha()
 		output_final.push(output_1d[i]);
 	}
 	output_final = output_final.join("");
-	document.getElementById("sha3_output").innerHTML = output_final;
+	document.getElementById("sha3_output").innerHTML = output_final; 
 	
 }
 
@@ -465,6 +467,41 @@ function padding(a)
 	return a; 
 
 }
+
+function compare()
+{
+
+	var o = document.getElementById("compare1").value;
+	var c = document.getElementById("compare2").value;
+	var output = [];
+	var compare = [];
+	var t = 0; 
+	
+	for(var i = 0; i < o.length;++i)
+	{
+		if(o[i] == '1' || o[i] == '0')
+			output.push(parseInt(o[i]));
+	}
+	
+	for(var i = 0; i < c.length; ++i)
+	{
+		if(c[i] == '1' || c[i] == '0')
+			compare.push(parseInt(c[i]));
+	}
+	
+	for(var i =0; i < output.length; ++i)
+	{
+		if(output[i] != compare[i])
+		{ ++t;
+			alert("not equal");
+			break; 		
+		}
+	} 
+	if(t == 0)
+	{
+		alert("equal"); 
+	}
+}
 </script>
 
 <body>
@@ -493,6 +530,9 @@ function padding(a)
 			<input type="text" class="form-control" id="3d" placeholder="Enter 3d array (1600 bits)">
 			<label for="ir">IR:</label>
 			<input type="number" class="form-control" id="ir" placeholder="Enter Round Index 0 - 23 here (for fcn IOTA)"> 
+			<label for="compare">Compare:</label>
+			<input type="text" class="form-control" id="compare1" placeholder="Enter String to compare">
+			<input type="text" class="form-control" id="compare2" placeholder="Enter String to compare">
 		</div>
 
 		<button type="button" class="btn btn-default" onclick="start()">SHA3_1_Test</button>
@@ -503,6 +543,7 @@ function padding(a)
 		<button type = "button" class = "btn btn-default" onclick = "start6()">Chi (#6) </button> 
 		<button type = "button" class = "btn btn-default" onclick = "start7()">Iota (#7) </button> 
 		<button type = "button" class = "btn btn-default" onclick = "simplifiedsha()">Simplified Sha3</button> 
+		<button type = "button" class = "btn btn-default" onclick = "compare()">Compare</button> 
 
 	</form>
 	<br> <br>
