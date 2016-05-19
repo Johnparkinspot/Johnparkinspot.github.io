@@ -1,9 +1,7 @@
-<!doctype HTML>
-
+<DOCTYPE !html>
 <html lang="en">
 <head>
-	<title>Crypto Project</title>
-	<!-- Makes it mobile friendly -->
+	<title> Projects</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- add Bootstrap content delivery network (CDN) -->
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -14,895 +12,1177 @@
 </head>
 
 <script>
+
+// Binary to Decimal Calculator works
+function bintodec()
+{
+			var bin_str= document.getElementById("binary").value;
+			var bin_num = new Array();
+			var i;
+			var j;
+			var k;
+			var dec; 
+			var temp;
+			var length; 
+			k = 0;
+			dec = 0;
+			// make sure all 1's and 0's not working atm 
+			/*
+			for(i = 0; i < bin_str.length;++i)
+			{
+					temp =  Number(bin_str[i]);
+					if((temp != 0) || (temp != 1))
+					{
+						alert("please enter only 1's and 0's");
+						break;
+					}
+			} 
+		  */
+		  
+		  // first reverse string
+			for(j=bin_str.length-1; j >= 0; --j)
+			{
+			bin_num[k] = bin_str[j];
+			k=k+1;
+			}
+				
+			
+			for(i = 0; i < bin_num.length; ++i)
+			{
+				if(Number(bin_num[i]) == 1)
+				{
+					dec = dec + Math.pow(2,i);
+				}
+			}
+			
+					
+			document.getElementById("output").innerHTML = dec;
+}
+
+function dectobin()
+{
+	var dec = Number(document.getElementById("decimal").value);
+	var remainder = new Array();
+	var i, k,t;
+	var remainderfinal = new Array();
+	i = 1;
+	k = 0;
+	t = 0; 
+	remainder[0] = dec % 2;
+	
+	if(dec <= 0)
+	{
+		alert("Please input a number greater than 0.");
+		return; 
+	}
+	
+	
+	while (true)
+	{
+			if(dec == 1)
+				break;
+			dec = Math.floor(dec/2);
+			remainder[i] = dec % 2;
+			++i;
+	}
+	// reverse the bin string to get correct orientation ( least to greatest - left to right)
+	for(i; i >= 0; --i)
+	{
+		remainderfinal[k] = remainder[i];
+		++k;
+	}
+	
+	// trying to remove the commas by concatinating the the elements of the array 
+	while(true)
+	{		// to skip over the NULL parts of the array  so that for '32' doesnt show = undef undef 1 0 0 0 0 0 0 ... 
+			if(remainderfinal[t] == 1)
+				break;
+				
+			if(!remainderfinal[t]) // checks if NULL or 0
+			{
+				++t;
+			}
+	}
+	
+	var concatinatedstring = String(remainderfinal[t]);
+	++t;
+	if(remainderfinal.length > 1)
+	{
+	for(t; t < remainderfinal.length; ++t)
+	{
+			concatinatedstring = concatinatedstring + String(remainderfinal[t]);
+	}
+	}
+	
+	document.getElementById("output").innerHTML = concatinatedstring;  // successfully does not show undefined parts (idk why that happens)
+}  
+
+
+//end binary to decimal calculator
+
+</script> 
+
+<script> // Monalphabetic Cipher Solver  *********************************************************
+
+var bool1,bool2,bool3,bool4,bool5,bool6, bool7,bool8,bool9,bool10;
+
+bool1 = bool2 = bool3=bool4=bool5=bool6=bool7=bool8=bool9=bool10=0;
+
+function boldletter(input, word) 
+{
+	return input.replace(new RegExp('(^|\\s)(' + word + ')(\\s|$)','ig'), '$1<b>$2</b>$3');
+}
+
+function replace()
+{
+		var cipher = document.getElementById("cipher").textContent;
+		var i;
+		var updatedcipher = document.getElementById("solution").textContent;
+		
+		if(bool10 == 1)
+		{
+			updatedcipher = updatedcipher.replace(/L/g,'b');// iaushbdiouhbakjshbdkjhabdsfkjhasbdfkjhab
+			updatedcipher = updatedcipher.replace(/M/g,'q');
+		}
+		
+		if(bool9 == 1)
+		{
+		    bool10= 1;
+			updatedcipher = updatedcipher.replace(/Y/g,'v');// iuahbskujdbakjhsbdjhkkabsd
+			updatedcipher = updatedcipher.replace(/G/g,'u'); 
+			updatedcipher = updatedcipher.replace(/N/g,'l');
+		}
+		
+		if(bool8 == 1)
+		{
+			bool9 = 1;
+			updatedcipher = updatedcipher.replace(/Q/g,'f'); // aliushbdljhabsd;ksjdnglkjsfejk
+			updatedcipher = updatedcipher.replace(/K/g,'r');
+			updatedcipher = updatedcipher.replace(/P/g,'m');
+			updatedcipher = updatedcipher.replace(/J/g,'g');  
+		}
+		if(bool7 ==1)
+		{
+			bool8=1;
+			updatedcipher = updatedcipher.replace(/A/g,'d'); //aailusjhdalj
+			updatedcipher = updatedcipher.replace(/X/g,'p');
+			updatedcipher = updatedcipher.replace(/U/g,'c');
+			updatedcipher = updatedcipher.replace(/Z/g,'k');
+		}
+		if(bool6 == 1)
+		{	//alert('6th part of the button');
+		    bool7 = 1;
+			updatedcipher = updatedcipher.replace(/T/g,'i');
+			updatedcipher = updatedcipher.replace(/D/g,'s');
+		}
+		
+		if(bool5 == 1)
+		{ //alert('6th part of the button');
+			bool6 = 1;
+			updatedcipher = updatedcipher.replace(/W/g,'y');
+		}
+		
+		if(bool4 ==1)
+		{ //alert('5th part of the button');
+			bool5 = 1;
+			updatedcipher = updatedcipher.replace(/C/g,'n');
+		}
+		
+		if(bool3 == 1) // REPLACE DCRL with FROM D~f C~ r
+		{// alert('4th part of the button');
+			bool4 = 1;
+			updatedcipher = updatedcipher.replace(/R/g,'o');
+			//document.getElementById("solution").innerHTML = updatedcipher;
+		}
+		
+		if(bool2 == 1) // REPLACE BR with in  R ~ o
+		{  // alert('third part of button');
+		    bool3 = 1;
+			updatedcipher = updatedcipher.replace(/H/g,'w');
+			document.getElementById("solution").innerHTML = updatedcipher;
+		}
+		
+		if(bool1 == 1)   // replace 'LF' with me
+		{
+		//alert('second part of the button' ); 
+		bool2 = 1;
+		updatedcipher = updatedcipher.replace(/E/g,'a');
+		
+		document.getElementById("solution").innerHTML = updatedcipher;
+		}
+		
+		
+		if(bool1 ==0)
+		{
+		//alert('first part of button changing "BSF" to "and" ');
+		bool1= 1;                      // ../g    flag replaces every instance of the word ( global) 
+		//cipher=cipher.replace(/BSF/g,'one');
+		cipher=cipher.replace(/B/g,'t');
+		cipher=cipher.replace(/S/g,'h');
+		cipher=cipher.replace(/F/g,'e');
+		
+		//cipher = cipher.replace(/(^|\s)(ONE)(\s|$)/ig, '$1<b>$2</b>$3');
+		//cipher = boldletter(cipher,"O");
+
+		document.getElementById("solution").innerHTML = cipher;
+		}
+		
+		//cipher = cipher.replace(/\s/g,'');  gets rid of whitespace 
+		//alert(cipher);
+		//alert(cipher[0]);
+		
+                                                    // (define regular expression, ' what you're replacing with')
+ //	cipher =  cipher.replace(/BKGF/i,'THATS');  // string immutable (not changing) so have to reassign value
+
+}
+
+function reset_cipher()
+{
+ bool1 = bool2 = bool3 = bool4 = bool5 = bool6 = bool7 = bool8 = bool9 = bool10 = 0;
+ document.getElementById("solution").innerHTML = "BKGF TCATYTAGENTDBD BFCA BR LF MGTBF GCRLDFKYECB TB TD BSF DCRL BSF HRGNA LF DRXSTDBTUEBF BSF QKTJSBFCFA URCQRKPTDB HSR ZFFXD E QEDUTCEBFA RK HRKKTFA FWF RC HSEB TD TC BSF HTCA";
+}
+// ***** END MONALPHABETIC CIPHER  **********************************************
+</script>  
+
+<script>  // Vigenere Cipher Example                 ||||||||||||||||||||||||||||||||||||||
 var alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
 var letter_freq = [0.08167,0.01492,0.02782,0.04253,0.12702,0.02228,0.02015,0.06094,0.06966,0.00153,0.00772,0.04025,0.02406,0.06749,0.07507,0.01929,0.00095,0.05987,0.06327,0.09056,0.02758,0.00978,0.02361,0.0015,0.01974,0.00074];
-var threelength = "onecanbuthashisnottheandforare";
-// helper functions
-function mod(n,m)
+function  index_coincidence()
 {
-	return ((n%m)+m) % m;
+var vig_ciph = document.getElementById("vigenere").textContent;
+var i,j;
+var n;
+var sigmatotal;
+var fi;
+var index_of_coincidence;
+n=0;
+fi=0;
+index_of_coincidence = 0;
+sigmatotal = 0;
+for(i = 0; i < vig_ciph.length;++i) // finding N (working)
+{
+	if(vig_ciph[i] != " ") // check if not whitespace
+		++n;
 }
-//input 1d array
-//output: returns the INDEX of the lowest value in the array 
-function get_lowest_index(a)
+
+for(i  = 0; i < 26; ++i) 
 {
-	var temp; 
-	var index = 0; 
-	temp = a[0]
-	for(var i = 1; i < a.length; ++i)
+	fi = 0;
+	for(j = 0; j < vig_ciph.length;++j)
 	{
-			if(a[i] < temp)
-			{
-				temp = a[i];
-				index = i; 
-			}
+		if(vig_ciph[j] == alphabet[i])
+		{
+			fi = fi+1;
+		}
 	}
-	
-	return index; 
+	sigmatotal = sigmatotal+ (fi*(fi-1));
 }
-function dec_to_bin(bitlength, decimal) // use array.unshift() to push to front of array 
-{  
-	var remainder;
-	var binary = new Array();
+
+index_of_coincidence = (sigmatotal) / (n*(n-1)); 
+document.getElementById("i_o_c").innerHTML= "N = " + n + "  Index of Coincidence: " + index_of_coincidence
++ "     This is the index of coincidence of the entire above cipher"; 
+} // END func index of coincidence
+
+function getIOC(input)
+{
 	var i;
-	for(i = 0; i < bitlength; ++i)
+	var j;
+	var n;
+	var fi, sigmatotal;
+	sigmatotal = fi = n = 0; 
+	for(i = 0; i < input.length; ++i)
 	{
-		
-		remainder = mod(decimal, 2);
-		binary.unshift(remainder); 
-		if(decimal == 1)
-		{
-			if(i < bitlength-1)  // pads the array with 0's if the algm ends too early
-			{
-				for(var j = i; j < bitlength-1; ++j)
-				{
-					binary.unshift(0);
-				}
-			}
-			break;
-		}
-		decimal = Math.floor(decimal / 2);
-	}
-	return binary; 
-}
-function bin_to_dec(binary)
-{
-	var decimal;
-	decimal = 0; 
-	var index, power;
-	index = 0;
-	for(var i =binary.length-1; i >= 0; --i)
-	{
-		if(binary[i] == 1)
-		{
-		power = Math.pow(2,index);
-		decimal = decimal + power; 
-		}
-		++index;
+		if(input[i] != " ")
+			++n; 
 	}
 	
-	return decimal; 
+	for(i = 0; i < 26; ++i)
+	{
+		fi = 0; 
+		for(j = 0; j < input.length; ++j)
+		{
+			if(input[j] == alphabet[i])
+			{
+				fi = fi + 1;
+			}
+		}
+		sigmatotal = sigmatotal + (fi* (fi - 1));
+	}
+	return sigmatotal / (n* (n-1));
 }
 
-//input binary array 
-//output: character a - z, or * if exceed bounds 
-function binary_to_letter(binary)
+function avgIOC()
 {
-	var letter = new Array();
-	var temp = new Array(); 
-	var dec = 0; 
-	// 5 because bit length is only 5 for a - z
-	for(var i = 0; i < binary.length; i += 5)
-	{
-		temp.push(binary[i]);
-		for(var j = 1; j < 5; ++j)
-		{
-			temp.push(binary[i+j]);
-		}
-		dec = bin_to_dec(temp); 
-		//dec = mod(dec,26); 
-		temp = [];
-		if(dec > 25)
-		{
-			letter.push('*'); // check to see if bin not part of alphabet
-		}
-		else
-		letter.push(alphabet[dec]);
+ var vig_ciph = document.getElementById("vigenere").textContent;
+ var keylength, i , j, startindex, temp;                 
+ startindex = 0; 
+ var split1 = new Array(); // use array.push(      )  to put stuff into array  
+ var split2 = new Array(); 
+ var split3 = new Array(); 
+ var split4 = new Array(); 
+ var split5 = new Array(); 
+ var split6 = new Array(); 
+ var split7 = new Array();
+ var split8 = new Array(); 
+ var split9 = new Array(); 
+ var split10 = new Array(); 
+// have to split it up into multiple strings
+vig_ciph = vig_ciph.split(' ').join('');  // removes whitespace 
+var bool1, bool2, bool3; // this is to make sure we are pushing into the correct arrays
+bool1 = bool2 = bool3 = 0; 
+keylength = 10; 
+// verry lazy not going to try and do generalization AT THE MOMENT. 
+	for(j = 0; j < vig_ciph.length; j += keylength)
+	{  
+	       split1.push(vig_ciph[j]); 
 	}
-	return letter;
+	//++startindex; // so that when we are going back thru the array we start at correct place 1st start at 0, then at 1 ... etc. 
+	for(j = 1; j < vig_ciph.length; j += keylength)
+	{  
+	       split2.push(vig_ciph[j]); 
+	}
+    for(j = 2; j < vig_ciph.length; j += keylength)
+	{  
+	       split3.push(vig_ciph[j]); 
+	}
+	for(j = 3; j < vig_ciph.length; j += keylength)
+	{  
+	       split4.push(vig_ciph[j]); 
+	}
+	for(j = 4; j < vig_ciph.length; j += keylength)
+	{  
+	       split5.push(vig_ciph[j]); 
+	}
+	for(j = 5; j < vig_ciph.length; j += keylength)
+	{  
+	       split6.push(vig_ciph[j]); 
+	}
+	for(j = 6; j < vig_ciph.length; j += keylength)
+	{  
+	       split7.push(vig_ciph[j]); 
+	}
+	for(j = 7; j < vig_ciph.length; j += keylength)
+	{  
+	       split8.push(vig_ciph[j]); 
+	}
+	for(j = 8; j < vig_ciph.length; j += keylength)
+	{  
+	       split9.push(vig_ciph[j]); 
+	}
+	for(j = 9; j < vig_ciph.length; j += keylength)
+	{  
+	       split10.push(vig_ciph[j]); 
+	}
+var IOC1 = getIOC(split1);
+var IOC2 = getIOC(split2);
+var IOC3 = getIOC(split3); 
+var IOC4 = getIOC(split4);
+var IOC5 = getIOC(split5); 
+var IOC6 = getIOC(split6); 
+var IOC7 = getIOC(split7); 
+var IOC8 = getIOC(split8);
+var IOC9 = getIOC(split9); 
+var IOC10 = getIOC(split10); 
+alert("THE avg IOC for keylen = 10 is:  "  + (IOC1+IOC2+IOC3+IOC4+IOC5+IOC6+IOC7+IOC8+IOC9+IOC10)/keylength); 
+
 }
-// end helpers *** 
-//tokenzies binary string into blocks of 5 (works)
-// [0][0..4] = 1st 5 bit block, [1][0..4] = 2nd 5 bit block 
-function tokanize_binary_5bits(array)
+function mod(n,m) 
 {
-	var a =[];
-	var temp = 0;
-	for(var i = 0; i < array.length; i += 5)
-	{
-		a[temp] = []; // create a
-		++temp; 
+	return ((n%m) + m) % m;
+}
+var key;
+key = 0; 
+function chisquared() // for key length 5 the string lengths are 97 flat ** 
+{
+	 var vig_ciph = document.getElementById("vigenere").textContent;
+	 vig_ciph = vig_ciph.split(' ').join('');  // removes whitespace 
+	 var keylength,j,i;
+	 var expectedvalue;
+	 var char_count; 
+	 char_count = 0; 
+	 keylength = 5;
+	 var split1 = new Array();
+	 var split2 = new Array();
+	 var split3 = new Array(); 
+	 var split4 = new Array(); 
+	 var split5 = new Array(); 
+	 
+	for(j = 0; j < vig_ciph.length; j += keylength)
+	{  
+	       split1.push(vig_ciph[j]); 
 	}
-	temp = 0; 
+	for(j = 1; j < vig_ciph.length; j += keylength)
+	{  
+	       split2.push(vig_ciph[j]); 
+	}
+    for(j = 2; j < vig_ciph.length; j += keylength)
+	{  
+	       split3.push(vig_ciph[j]); 
+	}
+	for(j = 3; j < vig_ciph.length; j += keylength)
+	{  
+	       split4.push(vig_ciph[j]); 
+	}
+	for(j = 4; j < vig_ciph.length; j += keylength)
+	{  
+	       split5.push(vig_ciph[j]); 
+	}
+	var C = new Array();
+	var E = new Array(); 
+	var chisquared = new Array(); 
 	
-	for(var i = 0; i < array.length; i += 5)
+	// this is where we shift the letters 26 times BACKWARDS because P = C - b *************
+//	var key;
+	//key = 0; 
+
+	for(i = 0; i < split1.length; ++i)
 	{
-		for(var j = 0; j < 5; ++j)
+		for(j = 0; j < 26; ++j)
 		{
-			a[temp][j] = 0; 
-		}	
-		++temp; 
-	}
-	temp = 0; 
-	for(var i = 0; i < array.length; i += 5)
-	{
-		for(var j = 0; j < 5 ; ++j)
-		{
-			a[temp][j] = array[i+j];
+				if(split5[i] == alphabet[j]) 
+				{
+					split5[i] = alphabet[mod(j-key,26)];
+					break; // EXTREMELY IMPORTANT BREAK TO PREVENT BUGS WHEN WRAP AROUNDING
+				}
 		}
-		++temp;
+	}  
+	// counting characters where formula happens, lazy so have to manually change the sequence from split1 -> split2 - split3 split4 split5
+	for(i = 0; i < 26; ++i)
+	{
+		for(j = 0; j < split5.length;++j)
+		{
+			if(split5[j] == alphabet[i])
+			{
+				++char_count;
+			}
+		}
+		C.push(char_count); 
+		E.push(letter_freq[i] * split5.length);
+		chisquared.push(Math.pow(C[i]-E[i],2)/E[i]);
+		char_count = 0; // reset char count once reaching end of 1st for  lop. 
+	}
+	var sigma;
+	sigma = 0; 
+	for(i = 0; i < 26; ++i)	// where we do the sigma part of the formula
+	{
+		sigma = sigma + chisquared[i];
+	}
+	if(key < 25)
+	{
+	++key;
+	}
+	document.getElementById("step3").innerHTML = sigma; 
+
+}
+var key1;
+key1 = 0; 
+// fill in the table 
+function fill_seq1() // fill column sequence 1
+{
+	var vig_ciph = document.getElementById("vigenere").textContent;
+	 vig_ciph = vig_ciph.split(' ').join('');  // removes whitespace 
+	 var keylength,j,i;
+	 var expectedvalue;
+	 var char_count; 
+	 char_count = 0; 
+	 keylength = 5;
+	 var split1 = new Array();
+	for(j = 0; j < vig_ciph.length; j += keylength)
+	{  
+	       split1.push(vig_ciph[j]); 
+	}
+
+	var C = new Array();
+	var E = new Array(); 
+	var chisquared = new Array(); 
+
+	for(i = 0; i < 97; ++i)
+	{
+		for(j = 0; j < 26; ++j)
+		{
+				if(split1[i] == alphabet[j]) 
+				{
+					split1[i] = alphabet[mod(j-key1,26)];
+					break; // EXTREMELY IMPORTANT BREAK TO PREVENT BUGS WHEN WRAP AROUNDING
+				}
+		}
+	}  
+	// counting characters where formula happens, lazy so have to manually change the sequence from split1 -> split2 - split3 split4 split5
+	for(i = 0; i < 26; ++i)
+	{
+		for(j = 0; j < 97;++j)
+		{
+			if(split1[j] == alphabet[i])
+			{
+				++char_count;
+			}
+		}
+		C.push(char_count); 
+		E.push(letter_freq[i] * 97);
+		chisquared.push(Math.pow(C[i]-E[i],2)/E[i]);
+		char_count = 0; // reset char count once reaching end of 1st for  lop. 
+	}
+	var sigma;
+	sigma = 0; 
+	for(i = 0; i < 26; ++i)	// where we do the sigma part of the formula
+	{
+		sigma = sigma + chisquared[i];
+	}
+
+	if(key1 != 14)
+	{
+			document.getElementById("seq1_"+key1).innerHTML = sigma; 
+	}
+	
+	if(key1 < 25)
+	{
+	++key1;
 	} 
-	temp = 0; 
-	return a;
-}
-// 3d array created (works)
-// [0] (first split) [0] 1st block [0..4] binary block
-function split_tokenized(tokenized,splits)
-{
-	var a = []; 
-	var temp = 0;
-	var temp2 = 0;
-	for(var i = 0; i < splits; ++i)
-	{
-		a[i] = [];
-	} // have splits amount of strings
-	for(var i = 0; i < splits; ++i)
-	{
-		for(var j = 0+i; j < tokenized.length; j += splits)
-		{
-			a[i][temp] = []; 
-			for(var k = 0; k < 5; ++k)
-			{
-				a[i][temp][k] = tokenized[j][k]; 
-			}
-			++temp;
-		}
-		temp = 0; 
-	}
-	return a; 
-}
-function start1()
-{
-	var v = document.getElementById("ct").value; // get ct from form
-	var ct = new Array();
-	for(var i = 0; i < v.length;++i)
-	{
-		if(v[i] == '0' || v[i] == '1')
-		{
-			ct.push(parseInt(v[i]));
-		}
-	} // converts char array to integer array 
-	
-	// tokenizes ct into 5 bit blocks
-	var tokenized = tokanize_binary_5bits(ct); 
-
-
-	var splits = 15; 
-	// keylength is most likely length 15 or 30 
-	var split = split_tokenized(tokenized,splits);
-	//alert(binary_to_letter(split[0][0]));
-	//alert(avgIOC(split));
-	
-	var chi = chisquared(split); 
-	var key = [15,11,0,24,18,1,0,18,10,4,19,1,0,11,11]; 
-	
-	for(var i = 0; i < splits; ++i)
-	{
-	
-		//alert(get_lowest_index(chi[i]) + ", " + chi[i][get_lowest_index(chi[i])]);
-		//key.push(get_lowest_index(chi[i]));
-	}
-	
-
-	
-	
-	var letter = [];
-	tokenized = decrypt(tokenized, key); 
-	for(var i =0 ; i < tokenized.length; ++i)
-	{
-		letter.push(binary_to_letter(tokenized[i]));
-	}
-	letter = letter.join("");
-	document.getElementById("output").innerHTML = letter; 
 
 }
-//input: 3d array split & tokenized array
-//output: avgIOC number 
-function avgIOC(a)
+
+var key2;
+key2 = 0; 
+// fill in the table 
+function fill_seq2() // fill column sequence 2
 {
-	var avgIOC = 0;
-	var sigma; 
-	var total;
-	var fi = 0; 
-	sigma = total = 0; 
-	for(var i = 0; i < a.length; ++i) // iterate thru splitted strings
+	var vig_ciph = document.getElementById("vigenere").textContent;
+	 vig_ciph = vig_ciph.split(' ').join('');  // removes whitespace 
+	 var keylength,j,i;
+	 var expectedvalue;
+	 var char_count; 
+	 char_count = 0; 
+	 keylength = 5;
+	 var split2 = new Array();
+	for(j = 1; j < vig_ciph.length; j += keylength)
+	{  
+	       split2.push(vig_ciph[j]); 
+	}
+
+	var C = new Array();
+	var E = new Array(); 
+	var chisquared = new Array(); 
+
+	for(i = 0; i < 97; ++i)
 	{
-		sigma = 0;
-		for(var j = 0; j < 26; ++j) // iterate thru alphabet 
+		for(j = 0; j < 26; ++j)
 		{
-			fi = 0; 
-			for(k = 0; k < a[i].length; ++k) // iterate thru tokenized 5-bit blocks (can convert to letters)
-			{
-				if(binary_to_letter(a[i][k]) == alphabet[j]) // check if equal to a - z 
+				if(split2[i] == alphabet[j]) 
 				{
-					fi = fi + 1;
+					split2[i] = alphabet[mod(j-key2,26)];
+					break; // EXTREMELY IMPORTANT BREAK TO PREVENT BUGS WHEN WRAP AROUNDING
 				}
-			}
-			sigma = sigma + (fi * (fi-1)); 
 		}
-		sigma = sigma / (a[i].length * (a[i].length - 1));
-		total = total + sigma; 
-	}
-	
-	avgIOC = total / a.length; 
-	
-	return avgIOC; 
-} 
-//input: 3d array 
-//output: chisquared 2d array  (Dont know if works) 
-// instead of array shifting it is array XORING 
-function chisquared(a)
-{
-	// chisquared hold all the chisquared numbers [number of splits] [26 entries for each alphabet]
-	var chisquared = []; 
-	var expectedvalue = []; 
-	var count = [];
-	var sigma = 0; 
-	var total = 0; 
-	
-	for(var i = 0; i < a.length; ++i)
+	}  
+	// counting characters where formula happens, lazy so have to manually change the sequence from split1 -> split2 - split3 split4 split5
+	for(i = 0; i < 26; ++i)
 	{
-		chisquared[i] = []; 
-		for(var j = 0; j < 26; ++j)
+		for(j = 0; j < 97;++j)
 		{
-		 chisquared[i][j] = 0; 
-		}
-	}
-	
-	
-	
-	for(var i = 0; i < a.length; ++i)
-	{
-		for(var key = 0; key < 26; ++key)
-		{
-				for(var s = 0; s < a[i].length; ++s) // where array XORING will occur 
-				{
-					var temp = bin_to_dec(a[i][s]); 
-					temp = xor_twoletters(temp,key); // xor 
-					var newletter = letter_to_binary(temp); 
-					a[i][s] = newletter;  // set equal to new letter in 5-bit binary form 
-				}
-
-				for(var k = 0; k < 26; ++k) // accumulate count and expectvalue in arrays
-				{
-					count.push(countchar(a[i],alphabet[k]));
-					expectedvalue.push(letter_freq[k] * a[i].length); 
-				}
-			
-				for(var p = 0; p < 26; ++p) // where chi squared calculations occur 
-				{	
-					sigma = sigma + (Math.pow(count[p]-expectedvalue[p],2) / expectedvalue[p]); 
-				}
-			chisquared[i][key] = sigma; 
-			sigma = 0; 	
-			count = [];  // empty array 
-			expectedvalue = []; 
-		}
-	}
-	return chisquared;
-}
-//input: 2d array ( a[i]) and character (used for chisquared fcn)
-//output: count of character in a[i] 
-function countchar(a,letter)
-{
-	var count = 0;
-	
-	for(var i = 0; i < a.length; ++i)
-	{
-		if(bin_to_dec(a[i]))
-		{
-			if(binary_to_letter(a[i]) == letter)
+			if(split2[j] == alphabet[i])
 			{
-			++count;
-			}		
-		}
-	}
-	
-	return count; 
-}
-//input: letter character a(0) - z(25) in integer form  
-//output: 5-bit binary array (00000 - 11001) 
-function letter_to_binary(letterkey)
-{
-	var binary = [];
-	binary = dec_to_bin(5,letterkey);
-	return binary; 
-}
-
-
-//input: two numbers 0-25 that represent letters
-//output: integer of two numbers are xored 
-function xor_twoletters(l1,l2)
-{
-	var bin_l1 = dec_to_bin(5,l1);
-	var bin_l2 = dec_to_bin(5,l2);
-	var output = []; 
-
-	for(var i = 0; i < 5; ++i)
-	{
-		output.push(bin_l1[i] ^ bin_l2[i]);
-	}
-	output = bin_to_dec(output);
-	return output; 
-
-}
-
-//input 2d tokenized array and key array (a = 0, b = 1, etc...)
-//output 2d tokenized array 
-function decrypt(tokenized,key)
-{	
-	var temp1;
-	var temp2;
-
-	for(var i = 0; i < tokenized.length; ++i)
-	{
-		temp1 = bin_to_dec(tokenized[i]);
-		temp2 = key[mod(i,key.length)];
-		var xored = xor_twoletters(temp1,temp2);
-		tokenized[i] = dec_to_bin(5,xored);
-	}
-
-	return tokenized; 
-}
-
-
-
-// function to decrypt ct2 
-function start2()
-{
-	var v = document.getElementById("ct").value; // get ct from form
-	var ct = new Array();
-	for(var i = 0; i < v.length;++i)
-	{
-		if(v[i] == '0' || v[i] == '1')
-		{
-			ct.push(parseInt(v[i]));
-		}
-	} // converts char array to integer array 
-	
-	// tokenizes ct into 5 bit blocks
-	var tokenized = tokanize_binary_5bits(ct); 
-
-
-	var splits = 7; 
-	// keylength is most likely length 7 
-	var split = split_tokenized(tokenized,splits);
-
-	var chi = chisquared(split); 
-	// 15,13,0,18,19,4,17
-	var key = [15,11,0,19,19,4,17];  // Solved key is "platter" 
-	
-	for(var i = 0; i < splits; ++i)
-	{
-		//alert(chi[i]); 
-		//alert(get_lowest_index(chi[i]) + ", " + chi[i][get_lowest_index(chi[i])]);
-		//key.push(get_lowest_index(chi[i]));
-	}
-	
-	
-	var letter = [];
-	var sol = decrypt(tokenized, key); 
-	for(var i =0 ; i < sol.length; ++i)
-	{
-		letter.push(binary_to_letter(sol[i]));
-	}
-	letter = letter.join("");
-	document.getElementById("output").innerHTML = letter; 
-	//alert(letter); 
-	
-}
-
-// used to decrypt ct 3 
-function start3()
-{
-	var v = document.getElementById("ct").value; // get ct from form
-	var ct = new Array();
-	for(var i = 0; i < v.length;++i)
-	{
-		if(v[i] == '0' || v[i] == '1')
-		{
-			ct.push(parseInt(v[i]));
-		}
-	} // converts char array to integer array 
-	
-	// tokenizes ct into 5 bit blocks
-	var tokenized = tokanize_binary_5bits(ct); 
-
-
-	var splits =10; 
-	// keylength is most likely length 10 or 20 
-	var split = split_tokenized(tokenized,splits);
-
-	//alert(avgIOC(split)); 
-	var chi = chisquared(split); 
-	// 
-	var key = [24,14,20,18,8,19,3,14,22,13];  // Solved key is "yousitdown" 
-	
-	for(var i = 0; i < splits; ++i)
-	{
-		//alert(chi[i]); 
-		//alert(get_lowest_index(chi[i]) + ", " + chi[i][get_lowest_index(chi[i])]);
-		//key.push(get_lowest_index(chi[i]));
-	}
-
-	var letter = [];
-	var sol = decrypt(tokenized, key); 
-	for(var i =0 ; i < sol.length; ++i)
-	{
-		letter.push(binary_to_letter(sol[i]));
-	}
-	letter = letter.join("");
-	document.getElementById("output").innerHTML = letter; 
-	
-}
-
-function start4()
-{
-	var v = document.getElementById("ct").value; // get ct from form
-	var ct = new Array();
-	for(var i = 0; i < v.length;++i)
-	{
-		if(v[i] == '0' || v[i] == '1')
-		{
-			ct.push(parseInt(v[i]));
-		}
-	} // converts char array to integer array 
-	
-	// tokenizes ct into 5 bit blocks
-	var tokenized = tokanize_binary_5bits(ct); 
-
-
-	var splits =10; 
-	// keylength is most likely length 5 or 10 
-	var split = split_tokenized(tokenized,splits);
-
-	//alert(avgIOC(split)); 
-	var chi = chisquared(split); 
-	// 
-	var key = [22,8,11,11,24,13,8,11,11,24];  // Solved key is "willynilly" 
-	
-	for(var i = 0; i < splits; ++i)
-	{
-		//alert(chi[i]); 
-		//alert(get_lowest_index(chi[i]) + ", " + chi[i][get_lowest_index(chi[i])]);
-		//key.push(get_lowest_index(chi[i]));
-	}
-
-	var letter = [];
-	var sol = decrypt(tokenized, key); 
-	for(var i =0 ; i < sol.length; ++i)
-	{
-		letter.push(binary_to_letter(sol[i]));
-	}
-	letter = letter.join("");
-	document.getElementById("output").innerHTML = letter; 
-	
-}
-
-function start5()
-{
-	var v = document.getElementById("ct").value; // get ct from form
-	var ct = new Array();
-	for(var i = 0; i < v.length;++i)
-	{
-		if(v[i] == '0' || v[i] == '1')
-		{
-			ct.push(parseInt(v[i]));
-		}
-	} // converts char array to integer array 
-	
-	// tokenizes ct into 5 bit blocks
-	var tokenized = tokanize_binary_5bits(ct); 
-
-
-	var splits =8; 
-	// keylength is most likely length 5 or 10 
-	var split = split_tokenized(tokenized,splits);
-
-	//alert(avgIOC(split)); 
-	var chi = chisquared(split); 
-	// 
-	var key = [22,8,11,3,11,8,5,4];  // Solved key is "wildlife" 
-	
-	for(var i = 0; i < splits; ++i)
-	{
-		//alert(chi[i]); 
-		//alert(get_lowest_index(chi[i]) + ", " + chi[i][get_lowest_index(chi[i])]);
-		//key.push(get_lowest_index(chi[i]));
-	}
-
-	var letter = [];
-	var sol = decrypt(tokenized, key); 
-	for(var i =0 ; i < sol.length; ++i)
-	{
-		letter.push(binary_to_letter(sol[i]));
-	}
-	letter = letter.join("");
-	document.getElementById("output").innerHTML = letter; 
-}
-
-function start6()
-{
-	var v = document.getElementById("ct").value; // get ct from form
-	var ct = new Array();
-	for(var i = 0; i < v.length;++i)
-	{
-		if(v[i] == '0' || v[i] == '1')
-		{
-			ct.push(parseInt(v[i]));
-		}
-	} // converts char array to integer array 
-	
-	// tokenizes ct into 5 bit blocks
-	var tokenized = tokanize_binary_5bits(ct); 
-
-
-	var splits =12; 
-	// keylength is most likely length 5 or 10 
-	var split = split_tokenized(tokenized,splits);
-
-	//alert(avgIOC(split)); 
-	var chi = chisquared(split); 
-	// 
-	var key = [0,12,0,3,0,12,0,13,0,3,0,12];  // Solved key is "a mad a man a dam" 
-	
-	for(var i = 0; i < splits; ++i)
-	{
-		//alert(chi[i]); 
-		//alert(get_lowest_index(chi[i]) + ", " + chi[i][get_lowest_index(chi[i])]);
-		//key.push(get_lowest_index(chi[i]));
-	}
-
-	var letter = [];
-	var sol = decrypt(tokenized, key); 
-	for(var i =0 ; i < sol.length; ++i)
-	{
-		letter.push(binary_to_letter(sol[i]));
-	}
-	letter = letter.join("");
-	document.getElementById("output").innerHTML = letter; 
-}
-
-function start7()
-{
-	var v = document.getElementById("ct").value; // get ct from form
-	var ct = new Array();
-	for(var i = 0; i < v.length;++i)
-	{
-		if(v[i] == '0' || v[i] == '1')
-		{
-			ct.push(parseInt(v[i]));
-		}
-	} // converts char array to integer array 
-	
-	// tokenizes ct into 5 bit blocks
-	var tokenized = tokanize_binary_5bits(ct); 
-
-
-	var splits =11; 
-	// keylength is most likely length 5 or 10 
-	var split = split_tokenized(tokenized,splits);
-
-	//alert(avgIOC(split)); 
-	var chi = chisquared(split); 
-	// 
-	var key = [4,23,15,4,17,8,4,13,2,4,3];  // Solved key is "a mad a man a dam" 
-	
-	for(var i = 0; i < splits; ++i)
-	{
-		//alert(chi[i]); 
-		//alert(get_lowest_index(chi[i]) + ", " + chi[i][get_lowest_index(chi[i])]);
-		//key.push(get_lowest_index(chi[i]));
-	}
-
-	var letter = [];
-	var sol = decrypt(tokenized, key); 
-	for(var i =0 ; i < sol.length; ++i)
-	{
-		letter.push(binary_to_letter(sol[i]));
-	}
-	letter = letter.join("");
-	document.getElementById("output").innerHTML = letter; 
-}
-
-function start8()
-{
-	var v = document.getElementById("ct").value; // get ct from form
-	var ct = new Array();
-	for(var i = 0; i < v.length;++i)
-	{
-		if(v[i] == '0' || v[i] == '1')
-		{
-			ct.push(parseInt(v[i]));
-		}
-	} // converts char array to integer array 
-	
-	// tokenizes ct into 5 bit blocks
-	var tokenized = tokanize_binary_5bits(ct); 
-
-
-	var splits =7; 
-	// keylength is most likely length 5 or 10 
-	var split = split_tokenized(tokenized,splits);
-
-	alert(avgIOC(split)); 
-	var chi = chisquared(split); 
-	// 
-	var key = [];  // Solved key is "a mad a man a dam" 
-	
-	for(var i = 0; i < splits; ++i)
-	{
-		//alert(chi[i]); 
-		//alert(get_lowest_index(chi[i]) + ", " + chi[i][get_lowest_index(chi[i])]);
-		key.push(get_lowest_index(chi[i]));
-	}
-
-	var letter = [];
-	var sol = decrypt(tokenized, key); 
-	for(var i =0 ; i < sol.length; ++i)
-	{
-		letter.push(binary_to_letter(sol[i]));
-	}
-	letter = letter.join("");
-	document.getElementById("output").innerHTML = letter; 
-}
-function start8()
-{
-
-}
-function start9()
-{ // testing
-	var tri = popular_trigraphs();
-	var s = ['o','t','h','e'];
-
-	for(var i = 0; i < s.length; ++i)
-	{
-		for(var j = 0; j < tri.length; ++j)
-		{
-			if(s[i] == tri[j][0] && s[i+1] == tri[j][1] && s[i+2] == tri[j][2])
-			{
-				alert("found trigraph" + ", " + tri[j]); 
+				++char_count;
 			}
 		}
+		C.push(char_count); 
+		E.push(letter_freq[i] * 97);
+		chisquared.push(Math.pow(C[i]-E[i],2)/E[i]);
+		char_count = 0; // reset char count once reaching end of 1st for  lop. 
 	}
-}
-
-function start10()
-{
-	var v = document.getElementById("ct").value; // get ct from form
-	var ct = new Array();
-	for(var i = 0; i < v.length;++i)
+	var sigma;
+	sigma = 0; 
+	for(i = 0; i < 26; ++i)	// where we do the sigma part of the formula
 	{
-		if(v[i] == '0' || v[i] == '1')
-		{
-			ct.push(parseInt(v[i]));
-		}
-	} // converts char array to integer array 
-	
-	// tokenizes ct into 5 bit blocks
-	var tokenized = tokanize_binary_5bits(ct); 
+		sigma = sigma + chisquared[i];
+	}
 
-	
-	var key = [0,0,0];  // Solved key is "a mad a man a dam" 
-	var tri = popular_trigraphs();
-	for(var i = 0; i < 26; ++i)
+	if(key2 != 19)
 	{
-		for(var j = 0; j < 26; ++j)
-		{
-			for(var k = 0; k < 26; ++k)
-			{
-				key[0] = i;
-				key[1] = j;
-				key[2] = k; 
-				var letter = [];
-				var sol = decrypt(tokenized,key);
-				for(var p = 0; p < sol.length; ++p)
-				{
-					letter.push(binary_to_letter(sol[p])); 
-				}
-				for(var p = 0; p < letter.length; ++p)
-				{
-					for(var l = 0; l < tri.length; ++l)
-					{
-						if(letter[p] == tri[l][0] && letter[p+1] == tri[l][1] && letter[p+2] == tri[l][2])
-						{
-							alert(key + ", " + letter); 
-						}
-					}
-				}
-
-			}
-		}
+			document.getElementById("seq2_"+key2).innerHTML = sigma; 
+	}
+	
+	if(key2 < 25)
+	{
+	++key2;
 	} 
-	
-	/*
-	var key = [0,11,9,14];  // Solved key is "a mad a man a dam" 
-	
-	var letter = [];
-	var sol = decrypt(tokenized, key); 
-	for(var i =0 ; i < sol.length; ++i)
-	{
-		letter.push(binary_to_letter(sol[i]));
-	}
-	letter = letter.join("");
-	document.getElementById("output").innerHTML = letter; 
-	*/
 }
 
-// below work is for last 3 CTs
-
-
-function popular_trigraphs()
+var key3;
+key3 = 0; 
+// fill in the table 
+function fill_seq3() // fill column sequence3
 {
-	var trigraphs = [];
-	var t = 0;
-	for(var i = 0; i < threelength.length; i +=3)
-	{
-		trigraphs[t] = [];
-		++t;
+	var vig_ciph = document.getElementById("vigenere").textContent;
+	 vig_ciph = vig_ciph.split(' ').join('');  // removes whitespace 
+	 var keylength,j,i;
+	 var expectedvalue;
+	 var char_count; 
+	 char_count = 0; 
+	 keylength = 5;
+	 var split3 = new Array();
+    for(j = 2; j < vig_ciph.length; j += keylength)
+	{  
+	       split3.push(vig_ciph[j]); 
 	}
-	t = 0;
-	
-	for(var i = 0; i < threelength.length; i += 3)
-	{
-			trigraphs[t].push(threelength[i+0]);
-			trigraphs[t].push(threelength[i+1]);
-			trigraphs[t].push(threelength[i+2]);
-			++t; 
-		
-	}
-	return trigraphs; 
 
-}
+	var C = new Array();
+	var E = new Array(); 
+	var chisquared = new Array(); 
 
-// static variables
-var bruteforcedkey = [0,0,0]; 
-function extendkey(keylength)
-{
-	var t = keylength - 3;
-	for(var i = 0; i < t; ++i)
+	for(i = 0; i < 97; ++i)
 	{
-		bruteforcedkey.push(0); 
-	}
-} 
-//input: integer keylength
-//output: [0][0][0], [1][0][0] ... [25][25][25]
-var bf_index = 0; 
-var i0,i1,i2;
-i0=i1=i2=0;
-function brute_force()
-{
-
-	
-	for(i0; i0 < 26; ++i0)
-	{
-		for(i1; i1 < 26; ++i1)
+		for(j = 0; j < 26; ++j)
 		{
-			for(i2; i2 < 26; ++i2)
+				if(split3[i] == alphabet[j]) 
+				{
+					split3[i] = alphabet[mod(j-key3,26)];
+					break; // EXTREMELY IMPORTANT BREAK TO PREVENT BUGS WHEN WRAP AROUNDING
+				}
+		}
+	}  
+	// counting characters where formula happens, lazy so have to manually change the sequence from split1 -> split2 - split3 split4 split5
+	for(i = 0; i < 26; ++i)
+	{
+		for(j = 0; j < 97;++j)
+		{
+			if(split3[j] == alphabet[i])
 			{
-				bruteforcedkey[0] = i0;
-				bruteforcedkey[1] = i1;
-				bruteforcedkey[2] = i2;
-				return;  
+				++char_count;
 			}
 		}
+		C.push(char_count); 
+		E.push(letter_freq[i] * 97);
+		chisquared.push(Math.pow(C[i]-E[i],2)/E[i]);
+		char_count = 0; // reset char count once reaching end of 1st for  lop. 
+	}
+	var sigma;
+	sigma = 0; 
+	for(i = 0; i < 26; ++i)	// where we do the sigma part of the formula
+	{
+		sigma = sigma + chisquared[i];
 	}
 
+	if(key3 != 7)
+	{
+			document.getElementById("seq3_"+key3).innerHTML = sigma; 
+	}
+	
+	if(key3 < 25)
+	{
+	++key3;
+	} 
 }
 
+var key4;
+key4 = 0; 
+// fill in the table 
+function fill_seq4() // fill column sequence4
+{
+	var vig_ciph = document.getElementById("vigenere").textContent;
+	 vig_ciph = vig_ciph.split(' ').join('');  // removes whitespace 
+	 var keylength,j,i;
+	 var expectedvalue;
+	 var char_count; 
+	 char_count = 0; 
+	 keylength = 5;
+	 var split4 = new Array();
+    for(j = 3; j < vig_ciph.length; j += keylength)
+	{  
+	       split4.push(vig_ciph[j]); 
+	}
+
+	var C = new Array();
+	var E = new Array(); 
+	var chisquared = new Array(); 
+
+	for(i = 0; i < 97; ++i)
+	{
+		for(j = 0; j < 26; ++j)
+		{
+				if(split4[i] == alphabet[j]) 
+				{
+					split4[i] = alphabet[mod(j-key4,26)];
+					break; // EXTREMELY IMPORTANT BREAK TO PREVENT BUGS WHEN WRAP AROUNDING
+				}
+		}
+	}  
+	// counting characters where formula happens, lazy so have to manually change the sequence from split1 -> split2 - split3 split4 split5
+	for(i = 0; i < 26; ++i)
+	{
+		for(j = 0; j < 97;++j)
+		{
+			if(split4[j] == alphabet[i])
+			{
+				++char_count;
+			}
+		}
+		C.push(char_count); 
+		E.push(letter_freq[i] * 97);
+		chisquared.push(Math.pow(C[i]-E[i],2)/E[i]);
+		char_count = 0; // reset char count once reaching end of 1st for  lop. 
+	}
+	var sigma;
+	sigma = 0; 
+	for(i = 0; i < 26; ++i)	// where we do the sigma part of the formula
+	{
+		sigma = sigma + chisquared[i];
+	}
+
+	if(key4 != 4)
+	{
+			document.getElementById("seq4_"+key4).innerHTML = sigma; 
+	}
+	
+	if(key4 < 25)
+	{
+	++key4;
+	} 
+}
+
+var key5;
+key5 = 0; 
+// fill in the table 
+function fill_seq5() // fill column sequence5
+{
+	var vig_ciph = document.getElementById("vigenere").textContent;
+	 vig_ciph = vig_ciph.split(' ').join('');  // removes whitespace 
+	 var keylength,j,i;
+	 var expectedvalue;
+	 var char_count; 
+	 char_count = 0; 
+	 keylength = 5;
+	 var split5 = new Array();
+    for(j = 4; j < vig_ciph.length; j += keylength)
+	{  
+	       split5.push(vig_ciph[j]); 
+	}
+
+	var C = new Array();
+	var E = new Array(); 
+	var chisquared = new Array(); 
+
+	for(i = 0; i < 97; ++i)
+	{
+		for(j = 0; j < 26; ++j)
+		{
+				if(split5[i] == alphabet[j]) 
+				{
+					split5[i] = alphabet[mod(j-key5,26)];
+					break; // EXTREMELY IMPORTANT BREAK TO PREVENT BUGS WHEN WRAP AROUNDING
+				}
+		}
+	}  
+	// counting characters where formula happens, lazy so have to manually change the sequence from split1 -> split2 - split3 split4 split5
+	for(i = 0; i < 26; ++i)
+	{
+		for(j = 0; j < 97;++j)
+		{
+			if(split5[j] == alphabet[i])
+			{
+				++char_count;
+			}
+		}
+		C.push(char_count); 
+		E.push(letter_freq[i] * 97);
+		chisquared.push(Math.pow(C[i]-E[i],2)/E[i]);
+		char_count = 0; // reset char count once reaching end of 1st for  lop. 
+	}
+	var sigma;
+	sigma = 0; 
+	for(i = 0; i < 26; ++i)	// where we do the sigma part of the formula
+	{
+		sigma = sigma + chisquared[i];
+	}
+
+	if(key5 != 17)
+	{
+			document.getElementById("seq5_"+key5).innerHTML = sigma; 
+	}
+	
+	if(key5 < 25)
+	{
+	++key5;
+	} 
+}
+
+
+function solve_vigenere()
+{
+		 var vig_ciph = document.getElementById("vigenere").textContent;
+		 vig_ciph = vig_ciph.split(' ').join('');  // removes whitespace
+		 var key = [14,19,7,4,17];
+		 var key_iterator; 
+		 key_iterator = 0;
+		 var i, j;
+		 var get_char;
+		 var solve = new Array(); 
+		 for(i = 0; i < vig_ciph.length; ++i)
+		 {
+			for(j = 0; j < 26; ++j)
+			{
+				if(vig_ciph[i] == alphabet[j])
+				{
+					get_char = j;
+					break;
+				}
+			}
+			//vig_ciph[i] = vig_ciph[i].replace(vig_ciph[i],alphabet[mod(get_char-key[key_iterator],26)]);
+			solve.push(alphabet[mod(get_char-key[key_iterator],26)])
+			key_iterator = mod(key_iterator + 1, 5); 
+		 }
+		 solve = solve.join('');
+		document.getElementById("solvevig").innerHTML = solve; 
+		document.getElementById("aftervig").innerHTML = "So it does give sensible plaintext. 'Banchoff discovered his first geometry .. '  "
+}
+
+//*** END Vigenere Cipher Example  ||||||||||||||||||||||||||||||||||||||||||||||
 </script>
 
 
 <body>
 
-
 <!-- Navigation -->
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="projects.html">Back</a>
+      <a class="navbar-brand" href="#">John Park</a>
     </div>
-
+    <ul class="nav navbar-nav">
+      <li ><a href="index.html">Home</a></li>
+      <li><a href="resume.html">Resume</a></li>
+      <li class="active"><a href="#">Projects</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
   </div>
 </nav>
 <!-- End Navigation -->
-]
-
-<div class="container" style="border: thin solid black">
-	<h2> Crypto Project - Decrypting XOR ciphers (PT XOR KEYSTREAM = CT) </h2> 
-	<p> <span class="glyphicon glyphicon-time"></span> April 28, 2016 </p>
-
-
-	<form role="form">
-		<div class="form-group">
-			<label for="ct">ct </label>
-			<input type="text" class="form-control" id="ct" placeholder ="Enter binary CT">
-		</div>
-
-		<button type="button" class="btn btn-default" onclick="start1()">CT1 Decrypt</button>
-		<button type="button" class = "btn btn-default" onclick="start2()">CT2 Decrypt</button> 
-		<button type ="button" class = "btn btn-default" onclick="start3()">CT3 Decrypt</button> 
-		<button type ="button" class = "btn btn-default" onclick="start4()"> CT4 Decrypt </button> 
-		<button type="button" class="btn btn-default" onclick="start5()">CT5 Decrypt </button>
-		<button type="button" class="btn btn-default" onclick="start6()">CT6 Decrypt </button> 
-		<button type="button" class="btn btn-default" onclick="start7()">CT7 Decrypt </button> 
-		<button type="button" class="btn btn-default" onclick="start8()"> CT8 Decrypt </button>
-		<button type="button" class="btn btn-default" onclick="start9()">CT9 Decrypt </button>
-		<button type="button" class="btn btn-default" onclick="start10()">CT10 Decypt </button> 
-
-	</form>
-
-	<p id="output" align="center" style="white-space:nowrap;overflow:auto">Output</p>
-
-
-	<br> <br> 
-	<p> ct1: (C29) </p>
-	<p id="ct1" align="center" style="white-space:nowrap;overflow:auto;">000001101000100010101011001100100111100110010101111010000101001110010111010111010111110010110011011000111000001111111001010100000100011100010111101011000110101101101110110000101111100011011001010101110000000110001000001111010111000111110011111111011010000100100000100010011111100001001000100101100111010111100001110010111010100101011001001000111001110001110101010000111111000010110100010011111111011001101101101010101110010010000000110001001001101000001110100000101111001011001010011000101001101001001111000010100100010100110111000110000100101000000100110001000101011100000111101101100011010011000011010110100001011101100010000001100101101000111011011110111001000000011001000001000001100010100101011000010000000000100110111001010000001011010100011001011110011000011011101011010000001000001011110011001011110010001010010111010011111100001000101001011001101000001111110010101111101101101001001100111000010001101001110011001010000110100111010101110010011101100111001111100001000001110100001000110101110001101001000000100100101111010000101011001100000011001000000001000010111001010000100011101011111000000000001111100110110001111011010010101011110111010101111101000001111100000111011101100000000000000000000100101110011011000001100101010000000001010101111100001111101100111111001111000101101101110111011010100001000001110010101111101101101001000011110011011010010101100100001111100111101101001011000100101101110010001111101111111001110111110011101101011110010001111011000110011001111010010001110111101001000010000000011111111110010101100010000101101000001011001001100010111101010010110110100000101010000101111000111101001110001001111000010010001110101011111010101100001101100011010010100100000101110010111110001001011010110101110000011101010011111110000101111100011011000101011111011101100010001100101100001111100000101101100001101100011100010011001000111011110011011010010111101011010101101100111001101001100001011100110010011001111000111100101110101111010110010010010110001111100010101101101011001000111101110010000000100101100001110000001011101001101010011100111011011111000001111001001011011100001100010110100000000010011100010010001111011011011000000010100001100100101100000001110110100111010111110000100100101110000110000001100101001011010100001011111011100000111111000001100101001000011101110101011101110011011101111001111111101100101101101100010000001011011000100010101110000100101001000011101111011000101110010010111010101111101001010001101101111010000101100100011000101110010111001011011000001110000010001011011000001001111000010100110110001111110011101000100110000000100110100101110001111010001101110011100111100000101000010000110010111111001001110001001001011000010101011010111011100011101111000101110101000010111010110010100011001000010011111101101100001100110101011111100011100100101010000110011000001100100001100101001110011010000011001000010110101100011111100001101001011000000000010011111011101100000100111100101000100000011000010111010100001100110000101101000001010001111100011100101111111011110100111100001111101100010001011001001001001111000010000100010111101010111101000100110111001010011010001011100010010010000000101100011101000101111100010100101010111010100101101101110011011101100000001001000010111101101011110011010011101101011100101000000001101101010100001010000010000101000000010110111000100110000001110011000010011011001101111010000101011010100101011000110111110011101101111000101100111010101110101101011101100100100111100101010101100100000111011011010010110001101000111101111010000001100111101000011000100110110110111111011010000001001101000111011000000110010011100010101000001110101000100111101001001100100111110000100101111110110010001110001100110001011100000111110000000101101110001101000110001001010101001011010001100110010011100110110111000001100101011101011111001000111011101100010000110101100111000101101101110110000100110001001010000001010101110101101000000011001000111000110000100011001111110000001000000011001101111010000001100110001101100011111111000100111101110001100001000000101101101011110110101001100110001011000100100000000100111100110010001111011011001000000001010000010000101000000010110101101101011111101000101100110101000010101110010100001100100101111001111000110001110011001010000110011000101000110000001111101111100010001101111111010010100101110001100101010010011110000111001000000000110000000011011001010000010110001010011101000010001000010100101000000001001001001000011001001010111110100100010011011000000001001011100100010101100001001011010110100111010110111001110010010000100110001000000000111010100010100100010110101100001010111100100000101011000110010001111011000110011000000110010000010111101101011110011010011101100010000110001001011000001001001111000010000100001111010011010000000100010011110010101011011000111001011001100001010010000100100101110110000000011111101011010010000000000011001000111110110101001100110001011111010110000000110111110010111110001010000001011001111101110100100111100101010101100000111101100000000101101101110000110000001111010010001110101111000110010010110100100111000100110000000011101110011101101110011100100111101000010000001101100110001111100010100111010101110010010000000110001000110000101111101100100100010101000001111101101011011011000001000001010011101110101111111100101101101110111100101111101101011011011001001111000010011000010101011000100111100011100001111110010001000001111011010100001000001100100011101111000100100001110100001111101110000001101000111000000011000101011011100001100010110011100000110111111100101100100000000100000011011010000010000110101100111001110100000010101111101111100110000100100101111010000101011001100100101111000110000000010110000100110001000101001000010100011101010000110101011010010110101101010110000010000001110001101001111000001001110000001000100001110000011101001100000001000100101000000001100110001001000000001011000011100011000100101110110111111011001100100111010101110101101011110111001000001111010011000111001000111100011010000001000000001001101011011110111011010111101011111100101101101110111000001001100011000000001000001000010000011101111100110011000001101011101101110001011001001000101010101111010000101100010101011111111001100100111111000000000001100111000001010011111111100001011010100011001000110001101011111001000100001100111111001110100101010000101011010001111101000011111101011110111010100001101011011011000101111011101110011110111101000111000010110011111111011000100010000001101110101111110110000001000010000000010110011001000010101010101001100110000001101000001000100001101000110101100111000011100100110001111100010001111011000001001111111100101000010101101001001010101101101110110010000110010000000000101000000001000101000110000000011001010111100000011011110001001000101011011001000111001110010011100011001100010110101110001010101101001100000001000111011000001001101101100100010100000000011110101000010110010000001100101111100100010011110100010011100011000101111000110101110011101101010010001111110011110101111010000101100010111110011000011111100000010011011010011000001011101110</p>
-	<p> Ct1 solved. Key is: playsbasketball </p> 
-
-	<p> ct2: (C30) </p>
-	<p id="ct2" align="center" style="white-space:nowrap;overflow:auto;">01101001010110110001101111010111100001110011000110000001010000000101001101111000101000001010111010101010011001000110101110000110000110010100010110001100111100110011000000000100100000101101001010110100101111010000001110100110010011111101110001001010110101110001000010000000011100011110011000001111011100101001000100111100001011001010011001100000000111001110000000011110001101100001101011110001100001001001010111001001101000100010110110110000101110100110010011110000001011001011001110110000100100001111011011001100000011001111100010010110101111100100111010111011000011101010110110111100000111110100011101110001001110000010000000001101011110101010110111100101000000010011110111000100111101000100000110100101101101000001100011101101011111001000100111001011011100010010011010001111100101101111010000000000111000000111111001101010001011010100010100011111111001000000100010101011100111001101001110110000000000011101011110111111100010001011101100001110001100000110110110101000011011110110010111110100000000001011110101000100111101010010111011100001001001110001100110010111011101111100101011100010111100000111110111111000010000100100001011100111000111101010011001101011110100110100001111110000011001111011100000111101111101101001000111101100000000000001011011111011000111100000110111011110111010000111110011111101001010000011001101001100101111001111100101011100010100011010111101</p>
-	<p> Ct2 solved. Key is: platter </p> 
 	
-	<p> ct3: (C31) </p>
-	<p id="ct3" align="center" style="white-space:nowrap; overflow:auto;">10000011100001011100000101011101011000110010101010111000110110100000110001011011100000110010001001011010101000100111110011001000100101101111011100010101010110001110000001010101010000111011011100000000101001011000111111001100110001001000111011011011100101001010101000001101010101000011101101001010101011100001101100100001011000001001011000000011100011111010001001100111100011000001100111101011110111101011000011100000000100101111011000001001111100000011110011101100110001110111010000111111111001011011111001111110000111110011000000001110111000111111111000000011001111010101100101100001101111001110010111010001100011100100010000000100011000111011000110100110000000001101101100111011100000110010001011011001000110110011000100110101100111001010001011111010011010100010110010110101010000011000111010101111110001110110001110010110010011000100011000101011111011000010101011101000101101110000000110001011100101001000111000010001</p>
-	<p> Ct3 solved. Key is: yousitdown </p>
 	
-	<p> ct4: (C32) </p> 
-	<p id="ct4" align="center" style="white-space:nowrap; overflow:auto;">11110011011100001100111001110001100010100111110011001001101000101001111110001010001101110100111110001101101000011010111111011111100011001101010111000011011010000100101001111001111111010110000010111000101000011000111001001001101001110110111111000111001010001111001100001111010011010001111001010011111110010001000101100101111011111001111000111100111001101101101111000000001110011111110110101111000100001100000101000111100010000111111100101111001111011000101011000000010011101110001111010110010001111001111010110011000011001100011110110110110001111000001101000000011010110001011011000110001011010101001110010110110010100000101100111101000110000111111000000000110001011001101110011111110101100111111010101010001100001001100010000011000001101111110001011011010000000011000101010010100111111001000000010110111101101101011110001000000011001011100001011010011110000000001101100101010000010000000000011110101010001000000111011000111000111011011001010101101010110100000011010000011011001000010100010111111010010010001100111010111111000001100001100001001101011000000011110010111101011100100100011000000110101100101101100101000011111101101010001101110101001110000011101100011101111110011001101000000100110101011000101011000100111000111000111011010111110100111111000110000011000010111001101110010001100001011100000010000000110000100110110110010001101000001101011000101001110010111001010100010101001000001001111101101100001100000000111010111110001101101001111110011001000011011000101110101011101101011000011001110000101011000100101100101010010101010010110000011011101101101101011110001011011011011110001101001111110111000110111110101101001010010011001010000001000000110111000111100000000001110001100011100111101001001110000000110011010100111001001000101000000111001010101011010111101001011010101110101011010001110000111010000011001101010010010100011100111110110000111010001111001001011011000000010010111101010110001010000010000110011010110110011100101100010111010110101110100001101110</p> 
-	<p>Ct4 solved. Key is: willynilly </p> 
+    <!-- Page Content -->
+    <div class="container" style="padding: 40px"  >
+		<div class = "row" >
+		
+			<div class = "col-lg-8">
+				<H1>Here are some things I have been working on: </h1> 
+			</div>
+		</div> 
+	</div> 
 	
-	<p> ct5:(C33)</p>
-	<p id="ct5" align="center" style="white-space:nowrap; overflow:auto;">1111111100110011000001010011000000001010001110110011000001000111111010101101010111000000100111101101011100010101011010101101101111011110001001111010100010101000100101101000101101100001100110011100000011011110111100000100010111101101101101110010100110001010100101011000110111010111100010110000011100101100111011101000000011011011101100000100110000011000010010101110101011011000101100111000000100000100101110011011111100000111000000100000000011010000000011010111110000110010111000111100011110011111011001111110010001000000101110110001101000110011011011010110001010010110110011101101110100110000101010011010100100001011001001111110001000101100100101101101011011100100001101011010100110110000110000011011110010100001000011101111000101110000110101011110100101110101001010011001110011110111100011001010100110100011110010101000100110000001000100101000100000010010010011001110110010110111100100111101111001000101111010101000000011010010000001101110011110101110001010110010100110001100110111101110110001000000101101101111000001110011001011001010100100101110110111101000000001101001001000000010101111010111000001100000001011110110101001100101111000110011111010</p>
-	<p>Ct5 solved. Key is: wildlife </p> 
-	
-	<p> ct6: (C34)</p>
-	<p id="ct6" align="center" style="white-space:nowrap; overflow:auto;">0000101000000100001110100111100010000101011011000000111010000001000010101001001010010010000111001000100110010000100001001000100111010001011000100111101001101010001001101101011001001010101000000010110110011010111010000000000110011110001110100000011111001001001000000000010001100011011010100000000000010001101000000001000000001000101001101010101010011100110011001001101100100110101101110000010000000000000110101101101111100010001110100111000100000000010001101101100010011100010000101010101000100010011100011011011100001101011110011110001000000010001100000010100000100111100101000101011011000000111011001001100010001010011000100111011001000110010001000010011001110010000011100010110110011010000001011110010000110101101010011000100010011001000000111010000010011010100110011110001000010000000111101100110110001001110001101000100010110100110111100000011101001001000000111010000100001110001000001101011011010000011101011100111100100111110010011100100100110100101000110101101100011010011110011011001000110101001110011100000001111001101011001011001001110010101001001101100010011110011010000101100111010000111000110110001001011111011100111100100111110011100100011010010100000011010111011001100111000000111010000011001000011010011110001011000101101111011100111000011001001001100100011100111001110010010010001101100011000000111111100010000001101010101110001000100110100001001000111010011011000110101111100110010000100000010010011011100100101110010000010111011111100010011100000111101001011001100010101101101010100010100010100011000000100000011001000011001010111101000001110101100100011100111010010000100010110101001000001110001111101001101011001001101110101010000000101001001000111010010110000001001011001110001110001011111100011111101001001010101001001010100010100011000110011010110000011110010001000001100011000101001000100101000000111010000010101101000101000010011010110000011111100110010000100101001000101001011010110110110011000101100111011100011000000111101010001110000110011101101111110011111000100011000001011001000110101011100110110110110011001000101111001001010010011001000110101111100110101101110000010000000111010111000000111010000110000011100010011101110010010000001111010001001000100110100000011100011010101101101010100010111101011100010110010000000000010101000010011110011010110010000011100010110110101010001000101100010000001101011011100000000001000001001011000001000110111110001110011100010000100000000111011000101101101010000010011010000100011101111111111001101011000001000010110010110010000000100110010000100011100000000001000001001011000</p>
-	<p>Ct6 solved. Key is: a mad a man a dam (no space) </p> 
-	
-	<p> ct7: (C35)</p>
-	<p id="ct7" align="center" style="white-space:nowrap; overflow:auto;">101111000001111101111101000110010010100100100101010001111100000010000101111101000000001001111100010100000101010000000101111001011100101010100111001101100110101010111010011010011101000111010101100100010100101111000100110110111101110001000100111010110001110001011000000011010110100110011000100010010001011011011101001100110010000010101011111101001000110001001010101010100100110011101000000011101111110010101001010010110110110110011010110100000101010010010101011110110011000011000011011111011101011010011001100010101111000100011001110010110111011000000000000001010100000000001110100010110001100101001110001110010010001010000101000011110111011101010011001000000101000110010101000111001100100101000100100010011010100111110101110010111100111000111101110000111000111101100011100001010110011110011011011000000000101010001101010101100001000010001000101101111100100100000111100101001001000100110000111110000110000000011010110111110000001010101110100100100111101110000011000100110011110100110010000001011100010101111010011001001100100010100101111011000111001000111110110010010110010010110111010011001110010001000000011010111010001110101010100010000001001100110001110101111100101000000001000111011010010001100011010100000011100100111101000000000000111100000011011001100011001111010110000000011001011010111100001101001011110010010000000111111111110001110011100000010011111000110101010001000000100010111101001100010010100111010000110010000011100011110000010111010100011110110110000110010010010001000010101101001011011000001000011010100001101000000000000000100001010011100001000110111100000000010101000010001001011110001111100101000111001100111101110100010001100011101110000101111111000001001111000000000010011000001000100000101111111000110101100110010101111110100101010100011011100100111100010010011000100101001000001010000010010001010001111100010101110001100001110110111010011000111000001100110111010101001010100010101101010001000001001110100010111001000000000011001111010100101011111011110001100101001111110000001100100101101110100110011101111010101100110100101100111001110000010111010101000100011011011011010011000010000110001001010101011110001010000010010100101100100100000011000100100011001111110000011000111000010001000000100000111110010101010000000011000001011010101000100001110100110010000000011001101100010000000000101111000001111101110001001111000001111010011011000110000011101110110000101101010110001001011011000101010101110001010000000010100110101110110001101001011110000010101001101100100011000000000001011011000100100001011000111000100110100111100110100110000000111010010111110111</p>
-	<p>Ct7 solved. Key is: experienced </p> 
-	
-	<p> ct8: (C54) </p>
-	<p id="ct8" align="center" style="white-space:nowrap;overflow:auto;">0111100010001001011110101111001100101010010001111010111001111011110110000110000011011011110110101011110100011101100100101011111011001011010100010000000011101000100011011110110011111110011110101100010000000100010110011100110010000010111011001000101100</p>
-	<p>Ct8 not solved yet. </p>
-
-	<p> ct9: (C60) </p>
-	<p id="ct9" align="center" style="white-space:nowrap;overflow:auto;">100110000011100110010101010001110000000011100110010000111100010101001000101101011011011001010111101001010000000000010101101100110000000110111110110010111010010011111</p>
-	<p>Ct9 not solved yet. </p>
-
-	<p> ct10: (C61) </p>
-	<p id="ct10" align="center" style="white-space:nowrap;overflow:auto;">00000110100110111010000011111100011010011110010010100010001001110101100110000011001000000000000000001011010101101111000000010000100100101001</p>
-	<p>Ct10 not solved yet.</p>
-
+	<!-- Puzzle Game --> 
+	<div class = "container" style = "border:thin solid black">
+	<br> 
+	<ul>
+		<li> <a href="15Tile.html"> 15-Image Puzzle Tile Game </a></li>
+		<li> <a href="RC4.html"> RC4 Decryption Example (RC4-2)</a> </li> 
+		<li> <a href="Sha3.html">Sha3 Hash Algorithm Example (WIP)</a></li>
+		<li><a href="cryptoproject.html"> Crypto Project (WIP)</a><li>
+	</ul> <br> 
 	</div>
+	<!-- End Puzzle Game --> 
+	
+	<br> <br> 
+	<!-- Binary to Decimal and vice versa calculator --> 
+	<div class="container" style="border: thin solid black">
+		<h2> Binary To Decimal </h2>
+		<p> <span class = "glyphicon glyphicon-time"></span> April 3, 2016 </p> 
+		<form role="form">
+			<div class="form-group">
+				<label for="Binary"> Binary: </label>
+				<input type="text" class="form-control" id="binary" placeholder="Enter Binary Number">
+			</div>
+			<div class="form-group">
+				<label for="decimal">Decimal:</label>
+				<input type="number" class="form-control" id="decimal" placeholder="Enter Decimal Number">
+			</div>
+
+
+				<p  id="output">  Output </p> 
+
+
+			<button type="button" class="btn btn-default" onclick="bintodec()"> Bin to Dec</button>
+			<button type="button" class="btn btn-default"  onclick="dectobin()"> Dec to Bin </button>
+		</form>
+	
+	</div>
+	<!-- End Binary to Decimal --> 	
+	<br>
+	
+	
+	<!-- Monalphabetic Cipher Solver Example -->
+	<div class= "container" style="border: thin solid black">
+	<h2> Example of a Monalphabetic Cipher </h2> 
+	<p> <span class="glyphicon glyphicon-time"></span> April 4, 2016 </p> 
+	<br> 
+	<p>Monalphabetic Ciphers  encode each unique Plaintext to a unique cipher text. No two 
+             different letters get encoded to a single letter. Given this cipher, the best way to go about solving
+			it is first by using frequency analysis. Since E is statistically the most common plaintext, we can try to find
+			the most frequently occuring ciphertext replace it with E. We can also replace 3 letter words with common 
+			trigraphs to further help us decode the cipher.</p>
+	<br>
+	<p id="cipher">BKGF TCATYTAGENTDBD BFCA BR LF MGTBF GCRLDFKYECB TB TD BSF DCRL BSF HRGNA LF
+DRXSTDBTUEBF BSF QKTJSBFCFA URCQRKPTDB HSR ZFFXD E QEDUTCEBFA RK HRKKTFA FWF
+RC HSEB TD TC BSF HTCA</p>
+
+	<br>
+	
+	<p id="solution" >BKGF TCATYTAGENTDBD BFCA BR LF MGTBF GCRLDFKYECB TB TD BSF DCRL BSF HRGNA LF
+DRXSTDBTUEBF BSF QKTJSBFCFA URCQRKPTDB HSR ZFFXD E QEDUTCEBFA RK HRKKTFA FWF
+RC HSEB TD TC BSF HTCA</p> 
+   <button type="button" class="btn btn-default" onclick="replace()"> Click a Lot </button>
+   <button type="button" class="btn btn-default" onclick="reset_cipher()"> Reset </button>
+	
+	<br>
+	<br>
+	</div>
+	
+<!-- End Monalphabetic Cipher Solver Example -->
+
+<br>
+
+<!-- Vigenere Cipher Solver Example --> 
+<div class = "container" style="border:thin solid black">
+<h2> Cryptanalysis of a Vigen&eacute;re Cipher </h2>
+<p> <span class = "glyphicon glyphicon-time"></span> April 4, 2016 </p>
+<br>
+<p> Say you have the plain text "ABC" and you want to encrypt it with the keyword "DEF". You would put the plaintext
+through a simple shift transformation. </p>
+<p align="middle"> <font size= "4">  C &equiv; P + b (Mod 26)  </font> </p>
+<p> Where b alternates from 'D', to 'E', to 'F', and back to 'D' with every shift until the encryption is complete.  
+We will try to decrypt this Vigen&eacute;re Cipher: </p> 
+<br> 
+
+<p id="vigenere">ptugycymhz gvvzvfxklz gypvjhzlsd smyckvxvvv atzewfxzld oglzvfrmvz rtfqffgprx halaycelwt vhvpncoshw welmehhjlm fvojfffhwj ogksmfavqv fhvqnolalv tbywkhhlrk skdlzzxdez hbukwckalv fxzxkcvvqv wgalvfxdej delrkmhmxz axastcgaid dehxvhalwy owvajowcee qbukrqkvwj halxzzxzek halfrgxvjk vxhpkokyez zpoiekxmmi gmhviwolhk vxueifhdsw halechxyvr wejsmsklhf befejatspg ckamfbhmxy smymrbzcpr fmppvgtuhs mmoivbwvjd olzecahzxk vxlrkwklxi wtukcsphwz bloeucpdlv bbhwbswtcj semhzrmoij vtksnqhcii vtsjkvxhvv oboeubmzxm rblhrbrmsi atskvcflxi mrlxsjmpjz uoyiu</p>  
+
+<br>
+<p><strong> Step 1: </strong> Find the length of the key. We do this by calculating the index of coincidence given by this formula</p> 
+<br>
+<center>
+<img src="http://practicalcryptography.com/media/latex/349fc3dc60622fffc17144839e45e61b8d0e7676-11pt.png">
+</center>
+<br>
+<br><br>
+<p> Where f<sub>i</sub> counts the occurances of A-Z in the ciphertext. <i> N </i> represents the total number of letters. 
+        This measures how similar  a frequency distribution is to a uniform distribution. (Per practicalcryptography.com)</p>
 
 
 
 
+<div class="sub" style= "border: thin solid black" >
+<p id="i_o_c">  </p> 
+<br> 
+</div>
+<br> 
+   <button type="button" class="btn btn-default" onclick="index_coincidence()"> Press </button>
+   <br> <br> 
+   
+ <p><strong> Step 2: </strong> By this formula, we will perform statistical analysis to try and determine the length of the keyword.
+  In order to do this, we will make make assumptions on the length of the key. For example, if we assume that the length of the key
+  is 4 letters long. We will have to split the cipher into 4 strings and get the average of the Index of Coincidence of all four sequences. 
+  Ex). Given CT ABCD and assuming the keylength is 2,  we will split the CT into 2 strings AC and BD and compute the Index of Coincidence for both strings and
+  take the average.</p> 
+   
+   <!-- Table of Avg I-o-C's -->
+   <div class= "sub"> 
+	<p> This is a table of the assumed keylengths and the average Index of Coincidences. </p> 
+		<table class = "table table-bordered"> 
+			<thead>
+				<tr>
+					<th> Keylength </th>
+					<th> Avg IC         </th> 
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td> 1 </td> 
+					<td> 0.0440828 </td>
+				</tr>
+				<tr>
+					<td> 2 </td>
+					<td> 0.0449529 </td> 
+				</tr>
+				<tr>
+					<td> 3 </td> 
+					<td>  0.0443636 </td> 
+				</tr>
+				<tr>
+					<td> 4 </td>
+					<td> 0.0438919</td> 
+				</tr>
+				<tr>
+					<td> 5 </td>
+					<td> <strong> 0.0670533 </strong></td>
+				</tr> 
+				<tr>
+					<td> 6 </td>
+					<td> 0.0443617 </td>
+				</tr> 
+				<tr> 
+					<td> 7 </td>
+					<td> 0.0423474</td>
+				</tr> 
+				<tr>
+					<td> 8 </td>
+					<td> 0.0425431</td>
+				</tr>
+				<tr>
+					<td> 9 </td> 
+					<td> 0.0450674 </td>
+				</tr> 
+				<tr>
+					<td> 10 </td>
+					<td><strong> 0.0693172  </strong> </td>
+				</tr> 
+			</tbody>
+		</table>
+   </div> 
+   <!-- END TABLE --> 
+   
+      <button type="button" class="btn btn-default" onclick="avgIOC()"> Step 2 Testing </button>
+	  <br>
+	 <p> Since the average IC's are higher in rows 5 and 10. This suggests that the keylength may be of length 5 or 10 </p> 
+	  <br> <br> 
+	  
+	  <p> <strong> Step 3: </strong> First assuming that the key length is 5, we only have 5 shift transformation ciphers to break. 
+      We will go through all 26 alphabet letters and use the Chi-squared statistic and select the letter that produces the lowest value.</p> 
+	  <br> 
+	  <center>
+	  <img src="http://practicalcryptography.com/media/latex/a84276327c1973a55df72cf4432ba17ca75231ac-11pt.png">
+	  </center>
+	  <br> <br> 
+	  <p> C<sub>i</sub> is the amount of a letters there is. E<sub>i</sub> is the expected count of the letter.
+	   To calculate this we get the (letterfrequency) * The number of characters in the ciphertext. I have gotten
+	   the letter frequency of each letter via wikpedia. (<a href = "https://en.wikipedia.org/wiki/Letter_frequency">https://en.wikipedia.org/wiki/Letter_frequency</a>) 
+	    As an example, a's letter frequency is 8.167%, it appears approximately 8.167 times for every 100 letters. We will multiply that with the 
+		number of characters in our ciphertext to get the expected value of a. 
+	  <br> <br>
+	   </p>
+	  <p id="step3" > </p> 
+	  
+	  <div class="sub" style = "text-align: center;">
+	  <button type="button" class="btn btn-default" onclick="fill_seq1(); fill_seq2(); fill_seq3();fill_seq4();fill_seq5();" align = "middle">Fill Columns </button>
+	  </div>
+	  <br> <br> 
+	  
+	  <!-- Table of Chi sq --> 
+	  <div class= "sub"> 
+	<p> So on Key 0, if our string is ABC, then on Key 1 the string is shifted by -1 so it is ZAB, then YZA in key 2. </p> 
+		<table class = "table table-bordered" style = "table-layout:fixed; "> 
+			<thead>
+				<tr>
+					<th> Key </th>
+					<th >Seq 1</th>
+					<th>Seq 2</th>
+					<th>Seq 3</th>
+					<th>Seq 4</th>
+					<th>Seq 5</th>
+				</tr>
+			</thead>
+			<tbody >
+				<tr>
+					<th> 0 </th> <th id = "seq1_0"  style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_0"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_0"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_0"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_0"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 1 </th> <th id = "seq1_1"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_1"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_1"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_1"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_1"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 2 </th> <th id = "seq1_2"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_2"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_2"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_2"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_2"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 3 </th> <th id = "seq1_3"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_3"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_3"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_3"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_3"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 4 </th> <th id = "seq1_4"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_4"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_4"style="overflow:hidden; white-space:nowrap;"> </th>  <th><mark>26</mark></th>  <th id = "seq5_4"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 5 </th> <th id = "seq1_5"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_5"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_5"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_5"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_5"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 6 </th> <th id = "seq1_6"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_6"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_6"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_6"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_6"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 7 </th> <th id = "seq1_7"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_7"style="overflow:hidden; white-space:nowrap;"></th>  <th><mark>34</mark> </th>  <th id = "seq4_7"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_7"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 8 </th> <th id = "seq1_8"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_8"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_8"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_8"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_8"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 9 </th> <th id = "seq1_9"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_9"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_9"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_9"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_9"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 10 </th> <th id = "seq1_10"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_10"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_10"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_10"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_10"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 11</th> <th id = "seq1_11"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_11"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_11"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_11"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_11"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 12 </th> <th id = "seq1_12"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_12"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_12"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_12"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_12"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 13 </th> <th id = "seq1_13"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_13"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_13"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_13"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_13"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 14</th> <th id = "seq1_14"style="overflow:hidden; white-space:nowrap;"><mark>20</mark> </th> <th id = "seq2_14"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_14"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_14"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_14"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 15 </th> <th id = "seq1_15"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_15"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_15"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_15"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_15"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 16 </th> <th id = "seq1_16"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_16"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_16"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_16"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_16"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 17 </th> <th id = "seq1_17"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_17"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_17"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_17"style="overflow:hidden; white-space:nowrap;">  </th>  <th><mark>29</mark>  </th> 
+				</tr>
+				<tr>
+					<th> 18 </th> <th id ="seq1_18"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_18"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_18"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_18"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_18"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 19 </th> <th id ="seq1_19"style="overflow:hidden; white-space:nowrap;"> </th> <th><mark>18</mark></th>  <th id = "seq3_19"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_19"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_19"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 20 </th> <th id = "seq1_20"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_20"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_20"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_20"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_20"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 21 </th> <th id = "seq1_21"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_21"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_21"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_21"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_21"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 22 </th> <th id = "seq1_22"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_22"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_22"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_22"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_22"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 23</th> <th id = "seq1_23"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_23"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_23"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_23"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_23"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 24 </th> <th id = "seq1_24"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_24"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_24"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_24"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_24"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+				<tr>
+					<th> 25 </th> <th id = "seq1_25"style="overflow:hidden; white-space:nowrap;"> </th> <th id = "seq2_25"style="overflow:hidden; white-space:nowrap;"></th>  <th id = "seq3_25"style="overflow:hidden; white-space:nowrap;"> </th>  <th id = "seq4_25"style="overflow:hidden; white-space:nowrap;">  </th>  <th id = "seq5_25"style="overflow:hidden; white-space:nowrap;">  </th> 
+				</tr>
+			</tbody>
+		</table>
+   </div> 
+	  <br>
+	  <p> I have only filled in the lowest numbers and highlighted them. 
+	  Thus, the key is very likely to correspond to these keys: 14, 19, 7, 4, 17. Which decodes to "other". I will see if thats the case
+	  in the final step</p> 
+	  <!-- END TABLE --> 
+	  <br> <br>
+	  
+	  <p><strong> Step 4: </strong> </p> 
+	  <div class = "sub">
+	  <p id ="solvevig" style="word-wrap: break-word;">ptugycymhz gvvzvfxklz gypvjhzlsd smyckvxvvv atzewfxzld oglzvfrmvz rtfqffgprx halaycelwt vhvpncoshw welmehhjlm fvojfffhwj ogksmfavqv fhvqnolalv tbywkhhlrk skdlzzxdez hbukwckalv fxzxkcvvqv wgalvfxdej delrkmhmxz axastcgaid dehxvhalwy owvajowcee qbukrqkvwj halxzzxzek halfrgxvjk vxhpkokyez zpoiekxmmi gmhviwolhk vxueifhdsw halechxyvr wejsmsklhf befejatspg ckamfbhmxy smymrbzcpr fmppvgtuhs mmoivbwvjd olzecahzxk vxlrkwklxi wtukcsphwz bloeucpdlv bbhwbswtcj semhzrmoij vtksnqhcii vtsjkvxhvv oboeubmzxm rblhrbrmsi atskvcflxi mrlxsjmpjz uoyiu </p>
+		</div> 
+	  <button type="button" class="btn btn-default" onclick="solve_vigenere()"> Solve </button>
+	  <br><br>
+	 <p id="aftervig">  </p> 
+	  
+	  <br> <br> 
+</div>
+<!-- End Vigenere example -->
+
+<br>
 
 
 </body>
+
+
 
 </html>
