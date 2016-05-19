@@ -16,6 +16,7 @@
 <script>
 var alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
 var letter_freq = [0.08167,0.01492,0.02782,0.04253,0.12702,0.02228,0.02015,0.06094,0.06966,0.00153,0.00772,0.04025,0.02406,0.06749,0.07507,0.01929,0.00095,0.05987,0.06327,0.09056,0.02758,0.00978,0.02361,0.0015,0.01974,0.00074];
+var threelength = "onecanbuthashisnottheandforare";
 // helper functions
 function mod(n,m)
 {
@@ -82,7 +83,6 @@ function bin_to_dec(binary)
 	
 	return decimal; 
 }
-
 //input binary array 
 //output: character a - z, or * if exceed bounds 
 function binary_to_letter(binary)
@@ -184,8 +184,6 @@ function start1()
 	
 	// tokenizes ct into 5 bit blocks
 	var tokenized = tokanize_binary_5bits(ct); 
-
-
 	var splits = 15; 
 	// keylength is most likely length 15 or 30 
 	var split = split_tokenized(tokenized,splits);
@@ -202,7 +200,6 @@ function start1()
 		//key.push(get_lowest_index(chi[i]));
 	}
 	
-
 	
 	
 	var letter = [];
@@ -213,7 +210,6 @@ function start1()
 	}
 	letter = letter.join("");
 	document.getElementById("output").innerHTML = letter; 
-
 }
 //input: 3d array split & tokenized array
 //output: avgIOC number 
@@ -281,7 +277,6 @@ function chisquared(a)
 					var newletter = letter_to_binary(temp); 
 					a[i][s] = newletter;  // set equal to new letter in 5-bit binary form 
 				}
-
 				for(var k = 0; k < 26; ++k) // accumulate count and expectvalue in arrays
 				{
 					count.push(countchar(a[i],alphabet[k]));
@@ -327,8 +322,6 @@ function letter_to_binary(letterkey)
 	binary = dec_to_bin(5,letterkey);
 	return binary; 
 }
-
-
 //input: two numbers 0-25 that represent letters
 //output: integer of two numbers are xored 
 function xor_twoletters(l1,l2)
@@ -336,23 +329,19 @@ function xor_twoletters(l1,l2)
 	var bin_l1 = dec_to_bin(5,l1);
 	var bin_l2 = dec_to_bin(5,l2);
 	var output = []; 
-
 	for(var i = 0; i < 5; ++i)
 	{
 		output.push(bin_l1[i] ^ bin_l2[i]);
 	}
 	output = bin_to_dec(output);
 	return output; 
-
 }
-
 //input 2d tokenized array and key array (a = 0, b = 1, etc...)
 //output 2d tokenized array 
 function decrypt(tokenized,key)
 {	
 	var temp1;
 	var temp2;
-
 	for(var i = 0; i < tokenized.length; ++i)
 	{
 		temp1 = bin_to_dec(tokenized[i]);
@@ -360,12 +349,8 @@ function decrypt(tokenized,key)
 		var xored = xor_twoletters(temp1,temp2);
 		tokenized[i] = dec_to_bin(5,xored);
 	}
-
 	return tokenized; 
 }
-
-
-
 // function to decrypt ct2 
 function start2()
 {
@@ -381,12 +366,9 @@ function start2()
 	
 	// tokenizes ct into 5 bit blocks
 	var tokenized = tokanize_binary_5bits(ct); 
-
-
 	var splits = 7; 
 	// keylength is most likely length 7 
 	var split = split_tokenized(tokenized,splits);
-
 	var chi = chisquared(split); 
 	// 15,13,0,18,19,4,17
 	var key = [15,11,0,19,19,4,17];  // Solved key is "platter" 
@@ -410,7 +392,6 @@ function start2()
 	//alert(letter); 
 	
 }
-
 // used to decrypt ct 3 
 function start3()
 {
@@ -426,12 +407,9 @@ function start3()
 	
 	// tokenizes ct into 5 bit blocks
 	var tokenized = tokanize_binary_5bits(ct); 
-
-
 	var splits =10; 
 	// keylength is most likely length 10 or 20 
 	var split = split_tokenized(tokenized,splits);
-
 	//alert(avgIOC(split)); 
 	var chi = chisquared(split); 
 	// 
@@ -443,7 +421,6 @@ function start3()
 		//alert(get_lowest_index(chi[i]) + ", " + chi[i][get_lowest_index(chi[i])]);
 		//key.push(get_lowest_index(chi[i]));
 	}
-
 	var letter = [];
 	var sol = decrypt(tokenized, key); 
 	for(var i =0 ; i < sol.length; ++i)
@@ -454,7 +431,6 @@ function start3()
 	document.getElementById("output").innerHTML = letter; 
 	
 }
-
 function start4()
 {
 	var v = document.getElementById("ct").value; // get ct from form
@@ -469,12 +445,9 @@ function start4()
 	
 	// tokenizes ct into 5 bit blocks
 	var tokenized = tokanize_binary_5bits(ct); 
-
-
 	var splits =10; 
 	// keylength is most likely length 5 or 10 
 	var split = split_tokenized(tokenized,splits);
-
 	//alert(avgIOC(split)); 
 	var chi = chisquared(split); 
 	// 
@@ -486,7 +459,6 @@ function start4()
 		//alert(get_lowest_index(chi[i]) + ", " + chi[i][get_lowest_index(chi[i])]);
 		//key.push(get_lowest_index(chi[i]));
 	}
-
 	var letter = [];
 	var sol = decrypt(tokenized, key); 
 	for(var i =0 ; i < sol.length; ++i)
@@ -497,7 +469,6 @@ function start4()
 	document.getElementById("output").innerHTML = letter; 
 	
 }
-
 function start5()
 {
 	var v = document.getElementById("ct").value; // get ct from form
@@ -512,12 +483,9 @@ function start5()
 	
 	// tokenizes ct into 5 bit blocks
 	var tokenized = tokanize_binary_5bits(ct); 
-
-
 	var splits =8; 
 	// keylength is most likely length 5 or 10 
 	var split = split_tokenized(tokenized,splits);
-
 	//alert(avgIOC(split)); 
 	var chi = chisquared(split); 
 	// 
@@ -529,7 +497,6 @@ function start5()
 		//alert(get_lowest_index(chi[i]) + ", " + chi[i][get_lowest_index(chi[i])]);
 		//key.push(get_lowest_index(chi[i]));
 	}
-
 	var letter = [];
 	var sol = decrypt(tokenized, key); 
 	for(var i =0 ; i < sol.length; ++i)
@@ -539,7 +506,6 @@ function start5()
 	letter = letter.join("");
 	document.getElementById("output").innerHTML = letter; 
 }
-
 function start6()
 {
 	var v = document.getElementById("ct").value; // get ct from form
@@ -554,12 +520,9 @@ function start6()
 	
 	// tokenizes ct into 5 bit blocks
 	var tokenized = tokanize_binary_5bits(ct); 
-
-
 	var splits =12; 
 	// keylength is most likely length 5 or 10 
 	var split = split_tokenized(tokenized,splits);
-
 	//alert(avgIOC(split)); 
 	var chi = chisquared(split); 
 	// 
@@ -571,7 +534,6 @@ function start6()
 		//alert(get_lowest_index(chi[i]) + ", " + chi[i][get_lowest_index(chi[i])]);
 		//key.push(get_lowest_index(chi[i]));
 	}
-
 	var letter = [];
 	var sol = decrypt(tokenized, key); 
 	for(var i =0 ; i < sol.length; ++i)
@@ -581,7 +543,6 @@ function start6()
 	letter = letter.join("");
 	document.getElementById("output").innerHTML = letter; 
 }
-
 function start7()
 {
 	var v = document.getElementById("ct").value; // get ct from form
@@ -596,12 +557,9 @@ function start7()
 	
 	// tokenizes ct into 5 bit blocks
 	var tokenized = tokanize_binary_5bits(ct); 
-
-
 	var splits =11; 
 	// keylength is most likely length 5 or 10 
 	var split = split_tokenized(tokenized,splits);
-
 	//alert(avgIOC(split)); 
 	var chi = chisquared(split); 
 	// 
@@ -613,7 +571,6 @@ function start7()
 		//alert(get_lowest_index(chi[i]) + ", " + chi[i][get_lowest_index(chi[i])]);
 		//key.push(get_lowest_index(chi[i]));
 	}
-
 	var letter = [];
 	var sol = decrypt(tokenized, key); 
 	for(var i =0 ; i < sol.length; ++i)
@@ -622,6 +579,174 @@ function start7()
 	}
 	letter = letter.join("");
 	document.getElementById("output").innerHTML = letter; 
+}
+function start8()
+{
+	var v = document.getElementById("ct").value; // get ct from form
+	var ct = new Array();
+	for(var i = 0; i < v.length;++i)
+	{
+		if(v[i] == '0' || v[i] == '1')
+		{
+			ct.push(parseInt(v[i]));
+		}
+	} // converts char array to integer array 
+	
+	// tokenizes ct into 5 bit blocks
+	var tokenized = tokanize_binary_5bits(ct); 
+	var splits =7; 
+	// keylength is most likely length 5 or 10 
+	var split = split_tokenized(tokenized,splits);
+	alert(avgIOC(split)); 
+	var chi = chisquared(split); 
+	// 
+	var key = [];  // Solved key is "a mad a man a dam" 
+	
+	for(var i = 0; i < splits; ++i)
+	{
+		//alert(chi[i]); 
+		//alert(get_lowest_index(chi[i]) + ", " + chi[i][get_lowest_index(chi[i])]);
+		key.push(get_lowest_index(chi[i]));
+	}
+	var letter = [];
+	var sol = decrypt(tokenized, key); 
+	for(var i =0 ; i < sol.length; ++i)
+	{
+		letter.push(binary_to_letter(sol[i]));
+	}
+	letter = letter.join("");
+	document.getElementById("output").innerHTML = letter; 
+}
+function start8()
+{
+}
+function start9()
+{ // testing
+	var tri = popular_trigraphs();
+	var s = ['o','t','h','e'];
+	for(var i = 0; i < s.length; ++i)
+	{
+		for(var j = 0; j < tri.length; ++j)
+		{
+			if(s[i] == tri[j][0] && s[i+1] == tri[j][1] && s[i+2] == tri[j][2])
+			{
+				alert("found trigraph" + ", " + tri[j]); 
+			}
+		}
+	}
+}
+function start10()
+{
+	var v = document.getElementById("ct").value; // get ct from form
+	var ct = new Array();
+	for(var i = 0; i < v.length;++i)
+	{
+		if(v[i] == '0' || v[i] == '1')
+		{
+			ct.push(parseInt(v[i]));
+		}
+	} // converts char array to integer array 
+	
+	// tokenizes ct into 5 bit blocks
+	var tokenized = tokanize_binary_5bits(ct); 
+	
+	var key = [0,0,0];  // Solved key is "a mad a man a dam" 
+	var tri = popular_trigraphs();
+	for(var i = 0; i < 26; ++i)
+	{
+		for(var j = 0; j < 26; ++j)
+		{
+			for(var k = 0; k < 26; ++k)
+			{
+				key[0] = i;
+				key[1] = j;
+				key[2] = k; 
+				var letter = [];
+				var sol = decrypt(tokenized,key);
+				for(var p = 0; p < sol.length; ++p)
+				{
+					letter.push(binary_to_letter(sol[p])); 
+				}
+				for(var p = 0; p < letter.length; ++p)
+				{
+					for(var l = 0; l < tri.length; ++l)
+					{
+						if(letter[p] == tri[l][0] && letter[p+1] == tri[l][1] && letter[p+2] == tri[l][2])
+						{
+							alert(key + ", " + letter); 
+						}
+					}
+				}
+			}
+		}
+	} 
+	
+	/*
+	var key = [0,11,9,14];  // Solved key is "a mad a man a dam" 
+	
+	var letter = [];
+	var sol = decrypt(tokenized, key); 
+	for(var i =0 ; i < sol.length; ++i)
+	{
+		letter.push(binary_to_letter(sol[i]));
+	}
+	letter = letter.join("");
+	document.getElementById("output").innerHTML = letter; 
+	*/
+}
+// below work is for last 3 CTs
+function popular_trigraphs()
+{
+	var trigraphs = [];
+	var t = 0;
+	for(var i = 0; i < threelength.length; i +=3)
+	{
+		trigraphs[t] = [];
+		++t;
+	}
+	t = 0;
+	
+	for(var i = 0; i < threelength.length; i += 3)
+	{
+			trigraphs[t].push(threelength[i+0]);
+			trigraphs[t].push(threelength[i+1]);
+			trigraphs[t].push(threelength[i+2]);
+			++t; 
+		
+	}
+	return trigraphs; 
+}
+// static variables
+var bruteforcedkey = [0,0,0]; 
+function extendkey(keylength)
+{
+	var t = keylength - 3;
+	for(var i = 0; i < t; ++i)
+	{
+		bruteforcedkey.push(0); 
+	}
+} 
+//input: integer keylength
+//output: [0][0][0], [1][0][0] ... [25][25][25]
+var bf_index = 0; 
+var i0,i1,i2;
+i0=i1=i2=0;
+function brute_force()
+{
+	
+	for(i0; i0 < 26; ++i0)
+	{
+		for(i1; i1 < 26; ++i1)
+		{
+			for(i2; i2 < 26; ++i2)
+			{
+				bruteforcedkey[0] = i0;
+				bruteforcedkey[1] = i1;
+				bruteforcedkey[2] = i2;
+				return;  
+			}
+		}
+	}
 }
 </script>
 
@@ -659,6 +784,9 @@ function start7()
 		<button type="button" class="btn btn-default" onclick="start5()">CT5 Decrypt </button>
 		<button type="button" class="btn btn-default" onclick="start6()">CT6 Decrypt </button> 
 		<button type="button" class="btn btn-default" onclick="start7()">CT7 Decrypt </button> 
+		<button type="button" class="btn btn-default" onclick="start8()"> CT8 Decrypt </button>
+		<button type="button" class="btn btn-default" onclick="start9()">CT9 Decrypt </button>
+		<button type="button" class="btn btn-default" onclick="start10()">CT10 Decypt </button> 
 
 	</form>
 
@@ -694,6 +822,18 @@ function start7()
 	<p id="ct7" align="center" style="white-space:nowrap; overflow:auto;">101111000001111101111101000110010010100100100101010001111100000010000101111101000000001001111100010100000101010000000101111001011100101010100111001101100110101010111010011010011101000111010101100100010100101111000100110110111101110001000100111010110001110001011000000011010110100110011000100010010001011011011101001100110010000010101011111101001000110001001010101010100100110011101000000011101111110010101001010010110110110110011010110100000101010010010101011110110011000011000011011111011101011010011001100010101111000100011001110010110111011000000000000001010100000000001110100010110001100101001110001110010010001010000101000011110111011101010011001000000101000110010101000111001100100101000100100010011010100111110101110010111100111000111101110000111000111101100011100001010110011110011011011000000000101010001101010101100001000010001000101101111100100100000111100101001001000100110000111110000110000000011010110111110000001010101110100100100111101110000011000100110011110100110010000001011100010101111010011001001100100010100101111011000111001000111110110010010110010010110111010011001110010001000000011010111010001110101010100010000001001100110001110101111100101000000001000111011010010001100011010100000011100100111101000000000000111100000011011001100011001111010110000000011001011010111100001101001011110010010000000111111111110001110011100000010011111000110101010001000000100010111101001100010010100111010000110010000011100011110000010111010100011110110110000110010010010001000010101101001011011000001000011010100001101000000000000000100001010011100001000110111100000000010101000010001001011110001111100101000111001100111101110100010001100011101110000101111111000001001111000000000010011000001000100000101111111000110101100110010101111110100101010100011011100100111100010010011000100101001000001010000010010001010001111100010101110001100001110110111010011000111000001100110111010101001010100010101101010001000001001110100010111001000000000011001111010100101011111011110001100101001111110000001100100101101110100110011101111010101100110100101100111001110000010111010101000100011011011011010011000010000110001001010101011110001010000010010100101100100100000011000100100011001111110000011000111000010001000000100000111110010101010000000011000001011010101000100001110100110010000000011001101100010000000000101111000001111101110001001111000001111010011011000110000011101110110000101101010110001001011011000101010101110001010000000010100110101110110001101001011110000010101001101100100011000000000001011011000100100001011000111000100110100111100110100110000000111010010111110111</p>
 	<p>Ct7 solved. Key is: experienced </p> 
 	
+	<p> ct8: (C54) </p>
+	<p id="ct8" align="center" style="white-space:nowrap;overflow:auto;">0111100010001001011110101111001100101010010001111010111001111011110110000110000011011011110110101011110100011101100100101011111011001011010100010000000011101000100011011110110011111110011110101100010000000100010110011100110010000010111011001000101100</p>
+	<p>Ct8 not solved yet. </p>
+
+	<p> ct9: (C60) </p>
+	<p id="ct9" align="center" style="white-space:nowrap;overflow:auto;">100110000011100110010101010001110000000011100110010000111100010101001000101101011011011001010111101001010000000000010101101100110000000110111110110010111010010011111</p>
+	<p>Ct9 not solved yet. </p>
+
+	<p> ct10: (C61) </p>
+	<p id="ct10" align="center" style="white-space:nowrap;overflow:auto;">00000110100110111010000011111100011010011110010010100010001001110101100110000011001000000000000000001011010101101111000000010000100100101001</p>
+	<p>Ct10 not solved yet.</p>
+
 	</div>
 
 
