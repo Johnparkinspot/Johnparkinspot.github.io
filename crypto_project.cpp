@@ -178,6 +178,17 @@ int get_letter_key(char letter)
 	return key; 
 }
 
+//input: word ['a','b','e'] gives back [0,1,4]  
+vector<int> word_to_key(vector<char> word)
+{
+	vector<int> result;
+	for (int i = 0; i < word.size(); ++i)
+	{
+		result.push_back(get_letter_key(word[i]));
+	}
+	return result; 
+}
+
 int main()
 {
 	string ct;
@@ -253,21 +264,147 @@ int main()
 	// prints last word ..
 
 
+	string wbf_string;
+	vector<vector<char>> wbf_v;
+	int wbf_i = 0;
+	ifstream wbf("words-by-frequency.txt"); // words by frequency
+	if (wbf.is_open())
+	{
+		while (getline(wbf, wbf_string))
+		{
+			wbf_v.push_back(vector<char>());
+			for (int i = 0; i < wbf_string.length(); ++i)
+			{
+				wbf_v[wbf_i].push_back(wbf_string[i]);
+			}
+			++wbf_i;
+		}
+		wbf.close();
+	}
+	else cout << "Unable to open file" << endl;
+
 
 	// ct_bin = tokenized bit string  
-	vector<int> key = { 0,0,0,0 };
+	vector<int> key;
 	//vector<vector<char>> decrypted_2darray;
 	//decrypted_2darray = decrypt(ct_bin, key); 
 	//print_2darray(decrypted_2darray); 
 
 
 
+	// dictionary attack begins here key1 = the key2 = or ... etc... 
+	vector<vector<char>> decrypted_2darray;
+	for (int i = 0; i < wbf_v.size(); ++i)
+	{
+		key = word_to_key(wbf_v[i]); 
+		decrypted_2darray = decrypt(ct_bin, key);
+		vector<char> ct_letters;
+		for (int j = 0; j < decrypted_2darray.size(); ++j)
+		{
+			ct_letters.push_back(bin_to_letter(decrypted_2darray[j]));
+		}
+		// ct xor key char array gotten by here 
+		//cout << i << ": ";
+		//print_word(ct_letters);
+
+		int index = 0;
+		int chars_right = 0;
+		int letter_key = 0; 
+		int words_right = 0; 
+		bool got_a_word = false; 
+		bool got_an_asterisk = false; 
+
+		int char_right_first_word = 0; 
+		bool word_at_beginning = false; 
+		while (index < ct_letters.size())
+		{
+			if (ct_letters[index] == '*' && (index+1) < ct_letters.size())
+			{
+				++index; 
+			}
+
+			if (ct_letters[index] != '*')
+			{	
+				chars_right = 0; 
+				letter_key = get_letter_key(ct_letters[index]); 
+				// fix this part 
+				for (int d = 0; d < alpha_dict[letter_key].size(); ++d)
+				{
+					chars_right = 0;
+					got_a_word = false; 
+					for (int f = 0; f < alpha_dict[letter_key][d].size(); ++f)
+					{
+						if ((index + f) < ct_letters.size())
+						{
+							if (ct_letters[index + f] == '*')
+							{
+								break;
+							}
+							if (ct_letters[index + f] == alpha_dict[letter_key][d][f])
+							{
+								++chars_right; 
+							}
+							if (chars_right == alpha_dict[letter_key][d].size())
+							{
+								index += chars_right;								
+								++words_right; 
+								got_a_word = true; 
+							}
+						}
+					}
+				} // end 1st for
+				// end fix this part 
+			}
+			for (int b = 0; b < key.size(); ++b)
+			{
+				if (ct_letters[b] == '*')
+					got_an_asterisk = true; 
+			}
+
+			// scan first word 
+			int f_letter_key = get_letter_key(ct_letters[0]); 
+			for (int d = 0; d < alpha_dict[f_letter_key].size(); ++d)
+			{
+				char_right_first_word = 0;
+				for (int f = 0; f < alpha_dict[f_letter_key][d].size(); ++f)
+				{
+					if (ct_letters[f] == alpha_dict[f_letter_key][d][f])
+					{
+						++char_right_first_word;
+					}
+					if (char_right_first_word == alpha_dict[f_letter_key][d].size())
+					{
+						word_at_beginning = true; 
+					}
+				}
+			}
+
+			if (words_right >= 1 && word_at_beginning)
+			{
+				for (int q = 0; q < key.size(); ++q)
+				{
+					cout << key[q] << ", ";
+				}
+				cout << endl; 
+				cout << i << " :";
+				print_word(ct_letters); 
+				//system("pause"); // press any letter to continue
+				break; 
+			}
+
+			if (!got_a_word)
+			{
+				++index; 
+			}
+		} // end while 
+
+
+	}
 
 
 
 
-
-
+	/*
 	
 	// brute forcing begins here 
 	for (int i = 0; i < 26; ++i)
@@ -304,10 +441,11 @@ int main()
 					{
 						if (ct_letters[index] != '*')
 						{
-							chars_right = 0; 
+							 
 							letter_key = get_letter_key(ct_letters[index]);
 							for (int d = 0; d < alpha_dict[letter_key].size(); ++d)
 							{ // iterate thru words starting with LETTER_KEY 
+							chars_right = 0;
 								for (int f = 0; f < alpha_dict[letter_key][d].size(); ++f)
 								{
 									if (ct_letters[index + f] == alpha_dict[letter_key][d][f])
@@ -334,14 +472,14 @@ int main()
 						}
 						else
 							break; // skip if first decry letter is * 
-					} */
+					} 
 
 				}
 			}
 		}
 	}
 
-	
+	*/
 
 
 
@@ -350,6 +488,6 @@ int main()
 
 
 
-
+	system("pause");
 	return 0; 
 }
