@@ -640,19 +640,34 @@ function start8()
 
 
 function start9()
-{ // testing
-	var tri = popular_trigraphs();
-	var s = ['o','t','h','e'];
-	for(var i = 0; i < s.length; ++i)
+{ 
+	var v = document.getElementById("ct").value; // get ct from form
+	var ct = new Array();
+	for(var i = 0; i < v.length;++i)
 	{
-		for(var j = 0; j < tri.length; ++j)
+		if(v[i] == '0' || v[i] == '1')
 		{
-			if(s[i] == tri[j][0] && s[i+1] == tri[j][1] && s[i+2] == tri[j][2])
-			{
-				alert("found trigraph" + ", " + tri[j]); 
-			}
+			ct.push(parseInt(v[i]));
 		}
+	} // converts char array to integer array 
+	
+	// tokenizes ct into 5 bit blocks
+	var tokenized = tokanize_binary_5bits(ct); 
+	var token_freq_words = tokenize_file_io(frequent_words); // dictionary array 
+	
+	var chars_right = 0; 
+	var index = 0; 
+	var words_right = 0; 
+	var key = [18,20,15,15,14,17,19,18]; 
+   
+	var letter = [];
+	var sol = decrypt(tokenized, key); 
+	for(var i =0 ; i < sol.length; ++i)
+	{
+		letter.push(binary_to_letter(sol[i]));
 	}
+	letter = letter.join("");
+	document.getElementById("output").innerHTML = letter; 
 }
 
 function start10()
@@ -971,7 +986,7 @@ function in_alphabet(letter)
 
 	<p> ct9: (C60) </p>
 	<p id="ct9" align="center" style="white-space:nowrap;overflow:auto;">100110000011100110010101010001110000000011100110010000111100010101001000101101011011011001010111101001010000000000010101101100110000000110111110110010111010010011111</p>
-	<p>Ct9 not solved yet. </p>
+	<p>Ct9 solved. Key is: supports </p>
 
 	<p> ct10: (C61) </p>
 	<p id="ct10" align="center" style="white-space:nowrap;overflow:auto;">00000110100110111010000011111100011010011110010010100010001001110101100110000011001000000000000000001011010101101111000000010000100100101001</p>
@@ -979,6 +994,7 @@ function in_alphabet(letter)
 
 	</div>
 
+	<br> <br> 
 
 
 
