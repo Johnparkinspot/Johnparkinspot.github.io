@@ -671,8 +671,22 @@ function start10()
 	var tokenized = tokanize_binary_5bits(ct); 
 	var token_freq_words = tokenize_file_io(frequent_words); // dictionary array 
 	
-	
-	
+	var chars_right = 0; 
+	var index = 0; 
+	var words_right = 0; 
+	var key = [0,17,6,20,4,12,4,13,14,18]; 
+   
+	var letter = [];
+	var sol = decrypt(tokenized, key); 
+	for(var i =0 ; i < sol.length; ++i)
+	{
+		letter.push(binary_to_letter(sol[i]));
+	}
+	letter = letter.join("");
+	document.getElementById("output").innerHTML = letter; 
+   
+   
+   
    /*
 	for(var i = 0; i < 26; ++i)
 	{
@@ -693,27 +707,38 @@ function start10()
 					letter.push(binary_to_letter(sol[r])); 
 					}
 					
-					
-					for(var l  = 0; l < token_freq_words.length;  ++l)
+					index = 0; 
+					while(index < letter.length)
 					{
-						
-						if(token_freq_words[l].length > 3)
-						{							
-							if(letter[0] == token_freq_words[l][0] && letter[1] == token_freq_words[l][1] && letter[2] == token_freq_words[l][2] && letter[3] == token_freq_words[l][3])
-							{	
-								alert(key + ", " + letter);
-							}	
+					for(var u = 0; u < token_freq_words.length; ++u)
+					{
+						chars_right = 0; 
+						for(var y = 0; y < token_freq_words[u].length; ++y)
+						{ // iterate thru characters in the word
+							if(letter[index+y] == token_freq_words[y])
+							{
+								++chars_right;
+							}
+							if(chars_right == token_freq_words[u].length) // then the word is right.. 
+							{
+								index += chars_right; 
+								++words_right; 
+							}
 						}
-
+						if(words_right >= 1)
+						{
+							alert(letter); 
+							break; 
+						}
 					}
-					
-					
+					}
+										
 				}
 			}
 		}
 	}
-	*/
 	
+	*/ 
 	/*
 	var key = [0,11,11,14,5,9];  // Solved key is "a mad a man a dam" 
 	
@@ -728,7 +753,31 @@ function start10()
 	*/ 
 }
 
-
+/*
+//input: dictionary array & ct xor key array (converted to characters) 
+//output: returns the number of words correct ex). theisaalsikjd sees that the is found, goes to next, sees is, finsihes. .. 
+function find_common_words(letter, dictionary)
+{
+	var num_of_correct = 0;
+	var index = 0; // hold the index
+	var  correct_letters = 0; 
+	
+	while(index < letter.length())
+	{
+		for(var i = 0; i < dictionary.length; ++i)
+		{
+			for(var j = 0; j < dictionary[i].length; ++j)
+			{ // iterate thru letters of the word
+				if(letter[index + j] == dictionary[i][j])
+				{
+					
+				}
+			}
+		}
+	}
+	
+}
+*/ 
 // below work is for last 3 CTs
 function popular_trigraphs()
 {
@@ -926,7 +975,7 @@ function in_alphabet(letter)
 
 	<p> ct10: (C61) </p>
 	<p id="ct10" align="center" style="white-space:nowrap;overflow:auto;">00000110100110111010000011111100011010011110010010100010001001110101100110000011001000000000000000001011010101101111000000010000100100101001</p>
-	<p>Ct10 not solved yet.</p>
+	<p>Ct10 solved. Key is: arguemenos</p>
 
 	</div>
 
