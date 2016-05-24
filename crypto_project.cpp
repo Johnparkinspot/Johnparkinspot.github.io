@@ -206,7 +206,7 @@ int main()
 	cout << alpha_dict[0][0][0] << endl; 
 	*/ 
 	int ct_index = 0; 
-	ifstream myfile("CT10.txt");
+	ifstream myfile("CT9.txt");
 	if (myfile.is_open())
 	{
 		while (getline(myfile,ct))
@@ -316,22 +316,58 @@ int main()
 
 		int char_right_first_word = 0; 
 		bool word_at_beginning = false; 
+
+		/*
+		// scan first word 
+		int f_letter_key = get_letter_key(ct_letters[0]);
+		for (int d = 0; d < alpha_dict[f_letter_key].size(); ++d)
+		{
+			char_right_first_word = 0;
+			for (int f = 0; f < alpha_dict[f_letter_key][d].size(); ++f)
+			{
+				
+					if (ct_letters[f] == alpha_dict[f_letter_key][d][f])
+					{
+						++char_right_first_word;
+					}
+					if (char_right_first_word == alpha_dict[f_letter_key][d].size())
+					{
+						word_at_beginning = true;
+						break;
+					}
+
+			}
+		}
+		
+		if (word_at_beginning) // removed words right > 1 temorary .. 
+		{
+			for (int q = 0; q < key.size(); ++q)
+			{
+				cout << key[q] << ", ";
+			}
+			cout << endl;
+			cout << i << " :";
+			print_word(ct_letters);
+			//system("pause"); // press any letter to continue
+			
+		}
+		*/
 		while (index < ct_letters.size())
 		{
-			if (ct_letters[index] == '*' && (index+1) < ct_letters.size())
+			if (ct_letters[index] == '*' && (index + 1) < ct_letters.size())
 			{
-				++index; 
+				++index;
 			}
 
 			if (ct_letters[index] != '*')
-			{	
-				chars_right = 0; 
-				letter_key = get_letter_key(ct_letters[index]); 
+			{
+				chars_right = 0;
+				letter_key = get_letter_key(ct_letters[index]);
 				// fix this part 
 				for (int d = 0; d < alpha_dict[letter_key].size(); ++d)
 				{
 					chars_right = 0;
-					got_a_word = false; 
+					got_a_word = false;
 					for (int f = 0; f < alpha_dict[letter_key][d].size(); ++f)
 					{
 						if ((index + f) < ct_letters.size())
@@ -342,27 +378,27 @@ int main()
 							}
 							if (ct_letters[index + f] == alpha_dict[letter_key][d][f])
 							{
-								++chars_right; 
+								++chars_right;
 							}
 							if (chars_right == alpha_dict[letter_key][d].size())
 							{
-								index += chars_right;								
-								++words_right; 
-								got_a_word = true; 
+								index += chars_right;
+								++words_right;
+								got_a_word = true;
 							}
 						}
 					}
 				} // end 1st for
-				// end fix this part 
+				  // end fix this part 
 			}
 			for (int b = 0; b < key.size(); ++b)
 			{
 				if (ct_letters[b] == '*')
-					got_an_asterisk = true; 
+					got_an_asterisk = true;
 			}
 
 			// scan first word 
-			int f_letter_key = get_letter_key(ct_letters[0]); 
+			int f_letter_key = get_letter_key(ct_letters[0]);
 			for (int d = 0; d < alpha_dict[f_letter_key].size(); ++d)
 			{
 				char_right_first_word = 0;
@@ -374,32 +410,32 @@ int main()
 					}
 					if (char_right_first_word == alpha_dict[f_letter_key][d].size())
 					{
-						word_at_beginning = true; 
+						word_at_beginning = true;
 					}
 				}
 			}
 
-			if (words_right >= 1 && word_at_beginning)
+			if (words_right > 1 && word_at_beginning)
 			{
 				for (int q = 0; q < key.size(); ++q)
 				{
 					cout << key[q] << ", ";
 				}
-				cout << endl; 
+				cout << endl;
 				cout << i << " :";
-				print_word(ct_letters); 
+				print_word(ct_letters);
 				//system("pause"); // press any letter to continue
-				break; 
+				break;
 			}
 
 			if (!got_a_word)
 			{
-				++index; 
+				++index;
 			}
-		} // end while 
+		} // end while
 
 
-	}
+	} 
 
 
 
