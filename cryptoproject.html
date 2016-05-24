@@ -619,7 +619,7 @@ function start8()
 	var chi = chisquared(split); 
 	
 	// [6,0,2,8,2,8,10]   maybe last 3 letters are you?  7,14,11,3,24,14,20
-	var key = [5,14,11,3,24,14,20];  // Solved key is "a mad a man a dam" 
+	var key = [6,0,3,8,3,8,11];  // Solved key is "a mad a man a dam" 
 	
 	for(var i = 0; i < splits; ++i)
 	{
@@ -689,7 +689,9 @@ function start10()
 	var chars_right = 0; 
 	var index = 0; 
 	var words_right = 0; 
-	var key = [0,17,6,20,4,12,4,13,14,18]; 
+	var key = [0,17,6,20,4,12,4,13,19,18]; 
+	//var key = [0,17,6,20,12,4,13,19,18];
+
    
 	var letter = [];
 	var sol = decrypt(tokenized, key); 
@@ -990,7 +992,7 @@ function in_alphabet(letter)
 
 	<p> ct10: (C61) </p>
 	<p id="ct10" align="center" style="white-space:nowrap;overflow:auto;">00000110100110111010000011111100011010011110010010100010001001110101100110000011001000000000000000001011010101101111000000010000100100101001</p>
-	<p>Ct10 solved. Key is: arguemenos</p>
+	<p>Ct10 solved. Key is: arguements. Amazingly enough, key = argue menos nearly works as well. </p>
 
 	</div>
 
